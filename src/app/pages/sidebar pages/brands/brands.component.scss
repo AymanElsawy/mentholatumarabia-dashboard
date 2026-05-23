@@ -1,0 +1,19 @@
+li a{
+    transition: .5s all;
+}
+
+li a:hover{
+   text-decoration: underline !important;
+}
+
+td {
+    vertical-align: middle;
+    text-align: center;
+    padding: 10px;
+}
+img {
+    width: 64px;
+    height: 64px;
+    object-fit: contain; /* Ensures full image is visible */
+    border-radius: 8px;
+}

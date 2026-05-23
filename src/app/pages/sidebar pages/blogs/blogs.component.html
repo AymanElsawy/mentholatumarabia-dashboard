@@ -1,0 +1,105 @@
+<h2>Our Blogs</h2>
+
+<div class="card">
+    <div class="flex justify-end">
+        <p-button label="Add Blog" [routerLink]="['/pages/blogs', 'add']" class="ms-auto mb-5" [fluid]="false"></p-button>
+    </div>
+    <p-table #dt1 [value]="BlogsList" dataKey="id" [rows]="10" [loading]="loading" [rowHover]="true" [showGridlines]="true" [paginator]="true" [globalFilterFields]="['id', 'title_en', 'title_ar']" responsiveLayout="scroll">
+        <ng-template #caption>
+            <div class="flex justify-between items-center flex-column sm:flex-row">
+                <button pButton label="Clear" class="p-button-outlined mb-2" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+                <p-iconfield iconPosition="left" class="ml-auto">
+                    <p-inputicon>
+                        <i class="pi pi-search"></i>
+                    </p-inputicon>
+                    <input pInputText type="text" (input)="onGlobalFilter(dt1, $event)" placeholder="Search keyword" />
+                </p-iconfield>
+            </div>
+        </ng-template>
+        <ng-template #header>
+            <tr>
+                <th style="min-width: 12rem">
+                    <div class="flex justify-between items-center">
+                        ID
+                        <p-columnFilter type="text" field="name" display="menu" placeholder="Search by name"></p-columnFilter>
+                    </div>
+                </th>
+                <th style="min-width: 12rem">
+                    <div class="flex justify-between items-center">
+                        English Name
+                        <p-columnFilter type="text" field="name" display="menu" placeholder="Search by name"></p-columnFilter>
+                    </div>
+                </th>
+                <th style="min-width: 12rem">
+                    <div class="flex justify-between items-center">
+                        Arabic Name
+                        <p-columnFilter type="text" field="name" display="menu" placeholder="Search by name"></p-columnFilter>
+                    </div>
+                </th>
+                <th style="min-width: 12rem">
+                    <div class="flex justify-between items-center">
+                        Actions
+                        <p-columnFilter type="text" field="name" display="menu" placeholder="Search by name"></p-columnFilter>
+                    </div>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-blog>
+            <tr>
+                <td>
+                    {{ blog.id }}
+                </td>
+                <td>
+                    <a [routerLink]="['/pages/blogs', blog.id]">
+                        {{ blog.title_en }}
+                    </a>
+                </td>
+                <td>
+                    <a [routerLink]="['/pages/blogs', blog.id]">
+                        {{ blog.title_ar }}
+                    </a>
+                </td>
+                <td class="flex justify-around">
+                    <p-button icon="pi pi-pencil" [routerLink]="['/pages/blogs', blog.id]" />
+
+                    <p-button icon="pi pi-trash" severity="danger" (click)="openConfirmation(blog.id)" />
+                </td>
+                <!-- <td> <div class="card">
+                    <div class="font-semibold text-xl mb-4">ConfirmDialog</div>
+                    <p-button label="Delete" icon="pi pi-trash" severity="danger" [style]="{ width: 'auto' }" (click)="openConfirmation()" />
+                    <p-dialog header="Confirmation" [(visible)]="displayConfirmation" [style]="{ width: '350px' }" [modal]="true">
+                        <div class="flex items-center justify-center">
+                            <i class="pi pi-exclamation-triangle mr-4" style="font-size: 2rem"> </i>
+                            <span>Are you sure you want to proceed?</span>
+                        </div>
+                        <ng-template #footer>
+                            <p-button label="No" icon="pi pi-times" (click)="closeConfirmation()" text severity="secondary" />
+                            <p-button label="Yes" icon="pi pi-check" (click)="closeConfirmation()" severity="danger" outlined autofocus />
+                        </ng-template>
+                    </p-dialog>
+                </div></td> -->
+            </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+            <tr>
+                <td colspan="8">No Blogs found.</td>
+            </tr>
+        </ng-template>
+        <ng-template #loadingbody>
+            <tr>
+                <td colspan="8">Loading Blogs data. Please wait.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog header="Confirmation" [(visible)]="displayConfirmation" [style]="{ width: '350px' }" [modal]="true">
+    <div class="flex items-center justify-center">
+        <i class="pi pi-exclamation-triangle mr-4" style="font-size: 2rem"></i>
+        <span>Are you sure you want to delete this Blog?</span>
+    </div>
+    <ng-template #footer>
+        <p-button label="No" icon="pi pi-times" (click)="closeConfirmation(false)" text severity="secondary" />
+        <p-button label="Yes" icon="pi pi-check" (click)="closeConfirmation(true)" severity="danger" outlined autofocus />
+    </ng-template>
+</p-dialog>
