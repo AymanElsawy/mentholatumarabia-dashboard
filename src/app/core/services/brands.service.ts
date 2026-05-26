@@ -11,51 +11,21 @@ export class BrandsService {
     constructor(private http: HttpClient) {}
 
     getBrands(): Observable<any> {
-        const token = localStorage.getItem('dbToken');
-
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`
-        });
-
-        return this.http.get(`${this.baseUrl}api/dashboard/brands`, { headers });
+        return this.http.get(`${this.baseUrl}api/dashboard/brands`);
     }
 
     getSingleBrands(id: string): Observable<any> {
-        const token = localStorage.getItem('dbToken');
-
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`
-        });
-
-        return this.http.get(`${this.baseUrl}api/dashboard/brands/${id}`, { headers });
+        return this.http.get(`${this.baseUrl}api/dashboard/brands/${id}`);
     }
 
     UpdateBrand(id: string, form: any): Observable<any> {
 
-        const token = localStorage.getItem('dbToken');
-
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`
-        });
-
-        return this.http.post(`${this.baseUrl}api/dashboard/brands/${id}`, form, { headers });
+        return this.http.post(`${this.baseUrl}api/dashboard/brands/${id}`, form);
     }
     AddBrand(form: any): Observable<any> {
-        const token = localStorage.getItem('dbToken');
-
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`
-        });
-
-        return this.http.post(`${this.baseUrl}api/dashboard/brands`, form, { headers });
+        return this.http.post(`${this.baseUrl}api/dashboard/brands`, form);
     }
     DeleteBrand(id: string): Observable<any> {
-        const token = localStorage.getItem('dbToken');
-
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`
-        });
-
-        return this.http.delete(`${this.baseUrl}api/dashboard/brands/${id}`, { headers });
+        return this.http.delete(`${this.baseUrl}api/dashboard/brands/${id}`);
     }
 }

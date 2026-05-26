@@ -11,12 +11,6 @@ export class ContactService {
     constructor(private http: HttpClient) {}
 
     getContact(): Observable<any> {
-        const token = localStorage.getItem('dbToken');
-
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`
-        });
-
-        return this.http.get(`${this.baseUrl}api/dashboard/contact`, { headers });
+        return this.http.get(`${this.baseUrl}api/dashboard/contact`);
     }
 }

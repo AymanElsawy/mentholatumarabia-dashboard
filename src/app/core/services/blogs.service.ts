@@ -11,52 +11,22 @@ export class BlogsService {
     constructor(private http: HttpClient) {}
 
     getBlogs(): Observable<any> {
-        const token = localStorage.getItem('dbToken');
-
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`
-        });
-
-        return this.http.get(`${this.baseUrl}api/dashboard/blogs`, { headers });
+        return this.http.get(`${this.baseUrl}api/dashboard/blogs`);
     }
 
     getSingleBlog(blogId: string): Observable<any> {
-        const token = localStorage.getItem('dbToken');
-
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`
-        });
-
-        return this.http.get(`${this.baseUrl}api/dashboard/blogs/${blogId}`, { headers });
+        return this.http.get(`${this.baseUrl}api/dashboard/blogs/${blogId}`);
     }
 
     createBlog(form: FormData): Observable<any> {
-        const token = localStorage.getItem('dbToken');
-
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`
-        });
-
-        return this.http.post(`${this.baseUrl}api/dashboard/blogs`, form, { headers });
+        return this.http.post(`${this.baseUrl}api/dashboard/blogs`, form);
     }
 
     updateBlog(form: any, id: string): Observable<any> {
-        const token = localStorage.getItem('dbToken');
-
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`
-        });
-
-        return this.http.post(`${this.baseUrl}api/dashboard/blogs/${id}`, form, { headers });
+        return this.http.post(`${this.baseUrl}api/dashboard/blogs/${id}`, form);
     }
 
     deleteBlog(id: string): Observable<any> {
-        const token = localStorage.getItem('dbToken');
-
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`
-        });
-
-        return this.http.delete(`${this.baseUrl}api/dashboard/blogs/${id}`, { headers });
+        return this.http.delete(`${this.baseUrl}api/dashboard/blogs/${id}`);
     }
 }

@@ -1,0 +1,57 @@
+<app-page-header [title]="id() != 'add' ? 'Edit Country' : 'Add Country'"></app-page-header>
+
+  @if(loading()){
+    <div class="flex items-center justify-center h-64">
+          <p-progress-spinner ariaLabel="loading" />
+    </div>
+  }@else{
+
+<form [formGroup]="CountryForm" (ngSubmit)="submitForm()">
+    <div class="card flex flex-col gap-4">
+
+        <!-- English Name -->
+        <div>
+            <label for="name_en" class="flex items-center mb-2 required">English Name</label>
+            <input
+                formControlName="name_en"
+                pInputText
+                id="name_en"
+                type="text"
+                class="w-full"
+                [class]="{
+                    'p-invalid border-red-500': isFieldInvalid('name_en'),
+                    border: true
+                }"
+            />
+            @if(isFieldInvalid('name_en')){
+                <small class="text-red-500">
+                    {{ getFieldErrorMessage('name_en') }}
+                </small>
+            }
+        </div>
+
+        <!-- Arabic Name -->
+        <div>
+            <label for="name_ar" class="flex items-center mb-2 required">Arabic Name</label>
+            <input
+                formControlName="name_ar"
+                pInputText
+                id="name_ar"
+                type="text"
+                class="w-full"
+                [class]="{
+                    'p-invalid border-red-500': isFieldInvalid('name_ar'),
+                    border: true
+                }"
+            />
+            @if(isFieldInvalid('name_ar')){
+                <small class="text-red-500">
+                    {{ getFieldErrorMessage('name_ar') }}
+                </small>
+            }
+        </div>
+
+        <p-button label="Submit" type="Submit" [fluid]="false" [loading]="submitting()"></p-button>
+    </div>
+</form>
+  }

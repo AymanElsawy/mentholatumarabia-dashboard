@@ -20,32 +20,26 @@ export class AppMenu {
 
     ngOnInit() {
         this.model = [
-
             {
-
-                items: [{ label: 'Brands', icon: 'pi pi-fw pi-list', routerLink: ['/pages/brands'] }]
-            }, {
-
+                items: [{ label: 'Brands', icon: 'pi pi-fw pi-star', routerLink: ['/pages/brands'] }]
+            },
+            {
                 items: [{ label: 'Products', icon: 'pi pi-fw pi-list', routerLink: ['/pages/products'] }]
             },
             {
-
                 items: [{ label: 'Countries', icon: 'pi pi-fw pi-globe', routerLink: ['/pages/countries'] }]
-            }, {
-
+            },
+            {
                 items: [{ label: 'Blogs', icon: 'pi pi-fw pi-file', routerLink: ['/pages/blogs'] }]
             },
             {
-
                 items: [{ label: 'Contact', icon: 'pi pi-fw pi-envelope', routerLink: ['/pages/contact'] }]
             },
 
             {
-
                 items: [{ label: 'Product FAQ', icon: 'pi pi-fw pi-list', routerLink: ['/pages/faq'] }]
             },
             {
-
                 items: [{ label: 'Admins', icon: 'pi pi-users', routerLink: ['/pages/admins'] }]
             }
         ];

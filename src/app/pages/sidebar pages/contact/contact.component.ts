@@ -1,26 +1,10 @@
-import { BrandsService } from '../../../core/services/brands.service';
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { InputTextModule } from 'primeng/inputtext';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { SelectModule } from 'primeng/select';
-import { SliderModule } from 'primeng/slider';
-import { Table, TableModule } from 'primeng/table';
-import { ProgressBarModule } from 'primeng/progressbar';
-import { ToggleButtonModule } from 'primeng/togglebutton';
-import { ToastModule } from 'primeng/toast';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { Component, computed, inject } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { RatingModule } from 'primeng/rating';
-import { RippleModule } from 'primeng/ripple';
-import { InputIconModule } from 'primeng/inputicon';
-import { IconFieldModule } from 'primeng/iconfield';
-import { TagModule } from 'primeng/tag';
-import { Router, RouterLink } from '@angular/router';
-
-import { DialogModule } from 'primeng/dialog';
+import { Router } from '@angular/router';
 import { ContactService } from '../../../core/services/contact.service';
+import { TableDataComponent, TableColumn, TableAction } from '../../../core/components/table-data/table-data.component';
+import { rxResource } from '@angular/core/rxjs-interop';
+
 export interface Contact {
     id: number;
     name: string;
@@ -34,57 +18,36 @@ export interface Contact {
 @Component({
     selector: 'app-contact',
     imports: [
-        DialogModule,
-        TableModule,
-        MultiSelectModule,
-        SelectModule,
-        InputIconModule,
-        TagModule,
-        InputTextModule,
-        SliderModule,
-        ProgressBarModule,
-        ToggleButtonModule,
-        ToastModule,
-        CommonModule,
-        FormsModule,
         ButtonModule,
-        RatingModule,
-        RippleModule,
-        IconFieldModule
+        TableDataComponent
     ],
     templateUrl: './contact.component.html',
     styleUrl: './contact.component.scss'
 })
 export class ContactComponent {
-    ContactList: Contact[] = [];
-    loading: boolean = true;
-    @ViewChild('filter') filter!: ElementRef;
-    displayConfirmation: boolean = false;
+    private contact = inject(ContactService);
+    private router = inject(Router);
 
-    constructor(
-        private contact: ContactService,
-        private router: Router
-    ) {}
-    ngOnInit(): void {
-        this.loading = true;
+    contactResource = rxResource({
+        stream: () => this.contact.getContact()
+    });
 
-        this.contact.getContact().subscribe({
-            next: (res) => {
-                this.ContactList = res.contacts;
+    ContactList = computed(() => this.contactResource.value()?.contacts ?? []);
+    loading = computed(() => this.contactResource.isLoading());
 
-                this.loading = false;
-            },
-            error: (err) => {
-                console.log(err);
-                this.loading = false;
-            }
-        });
-    }
-    onGlobalFilter(table: Table, event: Event) {
-        table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
-    }
-    clear(table: Table) {
-        table.clear();
-        this.filter.nativeElement.value = '';
-    }
+    tableColumns: TableColumn[] = [
+        { field: 'name', header: 'Name', type: 'text' },
+        { field: 'email', header: 'Email', type: 'text' },
+        { field: 'type', header: 'Type', type: 'text' },
+        { field: 'reason', header: 'Reason', type: 'text' },
+    ];
+    globalFilterFields: string[] = ['name', 'email', 'type', 'reason'];
+    
+    customActions: TableAction[] = [
+        { 
+            icon: 'pi pi-pencil', 
+            label: 'Reply', 
+            getHref: (item) => 'mailto:' + item.email 
+        }
+    ];
 }

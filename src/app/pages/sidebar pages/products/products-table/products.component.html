@@ -1,0 +1,16 @@
+<h2>Products</h2>
+<div class="card">
+    <div class="flex justify-end">
+        <p-button label="Add Product" [routerLink]="['/pages/products', 'add']" class="ms-auto mb-5" [fluid]="false"></p-button>
+    </div>
+    <app-table-data 
+        [data]="products()" 
+        [loading]="loading()" 
+        [columns]="tableColumns"
+        [globalFilterFields]="globalFilterFields"
+        editRoutePrefix="/pages/products"
+        [hasDelete]="true"
+        deleteEntityName="product"
+        (delete)="deleteProduct($event)">
+    </app-table-data>
+</div>

@@ -1,0 +1,17 @@
+<h2>Our Brands</h2>
+<div class="card">
+    <div class="flex justify-end">
+        <p-button label="Add Brand" [routerLink]="['/pages/brands', 'add']" class="ms-auto mb-5" [fluid]="false"></p-button>
+    </div>
+
+    <app-table-data 
+        [data]="brandsList()" 
+        [loading]="loading()" 
+        [columns]="tableColumns"
+        [globalFilterFields]="globalFilterFields"
+        editRoutePrefix="/pages/brands"
+        [hasDelete]="true"
+        deleteEntityName="brand"
+        (delete)="deleteBrand($event)">
+    </app-table-data>
+</div>

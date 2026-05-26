@@ -14,79 +14,36 @@ export class ProductsService {
     constructor(private http: HttpClient) {}
 
     getProducts(): Observable<any> {
-        const token = localStorage.getItem('dbToken');
-
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`
-        });
-
-        return this.http.get(`${this.baseUrl}api/dashboard/products?brand_id=`, { headers });
+        return this.http.get(`${this.baseUrl}api/dashboard/products?brand_id=`);
     }
 
     getSingleProduct(id: string): Observable<any> {
-        const token = localStorage.getItem('dbToken');
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`
-        });
-
-        return this.http.get(`${this.baseUrl}api/dashboard/products/${id}`, { headers });
+        return this.http.get(`${this.baseUrl}api/dashboard/products/${id}`);
     }
     getAllProductFAQS(id: string): Observable<any> {
-        const token = localStorage.getItem('dbToken');
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`
-        });
-
-        return this.http.get(`${this.baseUrl}api/dashboard/products/${id}/faqs`, { headers });
+        return this.http.get(`${this.baseUrl}api/dashboard/products/${id}/faqs`);
     }
     // api/dashboard/products/faqs
     createFAQ(formBody: string): Observable<any> {
-        const token = localStorage.getItem('dbToken');
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`
-        });
-
-        return this.http.post(`${this.baseUrl}api/dashboard/products/faqs`, formBody, { headers });
+        return this.http.post(`${this.baseUrl}api/dashboard/products/faqs`, formBody);
     }
 
     updateFaq(formBody: string, id: any): Observable<any> {
-        const token = localStorage.getItem('dbToken');
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`
-        });
-
-        return this.http.post(`${this.baseUrl}api/dashboard/products/faqs/${id}`, formBody, { headers });
+        return this.http.post(`${this.baseUrl}api/dashboard/products/faqs/${id}`, formBody);
     }
 
     deleteFaq(id: any): Observable<any> {
-        const token = localStorage.getItem('dbToken');
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`
-        });
-
-        return this.http.delete(`${this.baseUrl}api/dashboard/products/faqs/${id}`, { headers });
+        return this.http.delete(`${this.baseUrl}api/dashboard/products/faqs/${id}`);
     }
     DeleteProduct(id: string): Observable<any> {
-        const token = localStorage.getItem('dbToken');
-
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`
-        });
-
-        return this.http.delete(`${this.baseUrl}api/dashboard/products/${id}`, { headers });
+        return this.http.delete(`${this.baseUrl}api/dashboard/products/${id}`);
     }
 
     UpdateProduct(id: string, form: any): Observable<any> {
-        const token = localStorage.getItem('dbToken');
-
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`
-        });
-
-        const formData = this.createUpdateFormData(form);
+     const formData = this.createUpdateFormData(form);
         for (let pair of formData.entries()) {
         }
-        return this.http.post(`${this.baseUrl}api/dashboard/products/${id}`, formData, { headers });
+        return this.http.post(`${this.baseUrl}api/dashboard/products/${id}`, formData);
     }
 
     private createUpdateFormData(form: any): FormData {
@@ -149,15 +106,8 @@ export class ProductsService {
     }
 
     AddProduct(form: any): Observable<any> {
-        const token = localStorage.getItem('dbToken');
-
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`
-        });
-
         const formData = this.createFormData(form);
-
-        return this.http.post(`${this.baseUrl}api/dashboard/products`, formData, { headers });
+        return this.http.post(`${this.baseUrl}api/dashboard/products`, formData);
     }
 
     private createFormData(form: any): FormData {

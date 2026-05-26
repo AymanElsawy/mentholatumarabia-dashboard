@@ -8,149 +8,94 @@
   --p-primary-color: #005E99 !important
 }
 
-/* PrimeNG Brand Form Styles */
+/* Global Form Styles */
 
-// Override PrimeNG invalid styles
-:host ::ng-deep {
-
-  // Invalid input styling
-  .p-inputtext.p-invalid,
-  .p-inputtextarea.p-invalid {
-    border-color: #ef4444 !important;
-    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2) !important;
-  }
-
-  // Valid input styling
-  .p-inputtext.ng-valid.ng-touched,
-  .p-inputtextarea.ng-valid.ng-touched {
-    border-color: #10b981 !important;
-    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2) !important;
-  }
-
-  // Focus states
-  .p-inputtext:focus,
-  .p-inputtextarea:focus {
-    outline: none !important;
-    border-color: #3b82f6 !important;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
-  }
-
-  // Invalid focus state
-  .p-inputtext.p-invalid:focus,
-  .p-inputtextarea.p-invalid:focus {
-    border-color: #ef4444 !important;
-    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3) !important;
-  }
-
-  // File upload styling
-  .p-fileupload {
-    .p-button {
-      transition: all 0.3s ease;
-    }
-
-    &.p-invalid {
-      .p-button {
-        border-color: #ef4444 !important;
-        background-color: rgba(239, 68, 68, 0.1) !important;
-        color: #ef4444 !important;
-      }
-    }
-  }
-
-  // Fieldset styling
-  .p-fieldset {
-    border: 2px solid #e5e7eb;
-    border-radius: 8px;
-
-    .p-fieldset-legend {
-      background-color: #f9fafb;
-      padding: 8px 16px;
-      border-radius: 4px;
-      font-weight: 600;
-      color: #374151;
-    }
-
-    .p-fieldset-content {
-      padding: 20px;
-    }
-  }
-
-  // Button styling
-  .p-button {
-    transition: all 0.3s ease;
-
-    &:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-  }
+// Fix input styling to inherit theme correctly (Dark Mode Support)
+.p-inputtext,
+.p-inputtextarea,
+.p-password input,
+.p-dropdown,
+.p-calendar input,
+.p-inputnumber input {
+  width: 100%;
 }
 
-// Form specific styles
-.brand-form {
-  .form-section {
-    background: #f8fafc;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 20px;
-  }
+// Error state styling
+.p-inputtext.p-invalid,
+.p-inputtextarea.p-invalid,
+.p-invalid > input,
+.p-dropdown.p-invalid {
+  border-color: #ef4444 !important;
+}
 
-  .required-field {
-    color: #ef4444;
+// Global Label Styling
+label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+label.required::after,
+.required > label::after {
+  content: " *";
+  color: #ef4444; /* red-500 */
+}
+
+// Fix alignment issues when one field has an error and another doesn't
+form .flex-col,
+form .flex-wrap {
+  justify-content: flex-start;
+  align-content: flex-start;
+}
+
+form .grid > div,
+form .flex-row > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+// Error Messages
+small.text-red-500 {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: #ef4444 !important;
+  font-weight: 500;
+  animation: slideIn 0.3s ease-out;
+}
+
+// Fieldsets - transparent to inherit theme (Dark Mode Support)
+.p-fieldset {
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid var(--surface-border, #e5e7eb);
+
+  .p-fieldset-legend {
+    background: transparent;
     font-weight: 600;
   }
 
-  // Grid layout improvements
-  .grid {
-    gap: 1rem;
+  .p-fieldset-content {
+    padding: 1rem;
   }
+}
 
-  // Label styling
-  label {
-    font-weight: 500;
-    color: #374151;
-    margin-bottom: 0.5rem;
-    display: block;
-  }
+// Arabic Fields RTL globally
+input[id$="_ar"],
+textarea[id$="_ar"] {
+  direction: rtl;
+  text-align: right;
+  font-family: 'Arial', sans-serif;
+}
 
-  // Error message styling
-  small.text-red-500 {
-    display: block;
-    margin-top: 0.25rem;
-    font-size: 0.875rem;
-    color: #ef4444;
-    font-weight: 500;
-    animation: slideIn 0.3s ease-out;
-  }
-
-  // Preview image styling
-  .preview-image {
-    border: 2px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 8px;
-    background: #f9fafb;
-
-    img {
-      border-radius: 4px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+// File Uploads
+.p-fileupload {
+  &.p-invalid {
+    .p-button {
+      border-color: #ef4444 !important;
+      color: #ef4444 !important;
     }
-  }
-
-  // Arabic input styling
-  input[id$="_ar"],
-  textarea[id$="_ar"] {
-    direction: rtl;
-    text-align: right;
-    font-family: 'Arial', sans-serif;
-  }
-
-  // Submit button area
-  .submit-area {
-    background: #f8fafc;
-    border-radius: 8px;
-    padding: 20px;
-    margin-top: 20px;
-    border: 1px solid #e5e7eb;
   }
 }
 
@@ -158,7 +103,7 @@
 @keyframes slideIn {
   from {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-5px);
   }
 
   to {
@@ -167,57 +112,15 @@
   }
 }
 
-// Responsive design
-@media (max-width: 768px) {
-  .brand-form {
-    .grid {
-      grid-template-columns: 1fr;
-    }
-
-    .col-span-12 {
-      grid-column: span 1;
-    }
-
-    .md\:col-span-6 {
-      grid-column: span 1;
-    }
-  }
-
-  :host ::ng-deep {
-    .p-fieldset {
-      .p-fieldset-legend {
-        font-size: 0.875rem;
-      }
-    }
-  }
-}
-
-// Focus-visible for better accessibility
-:host ::ng-deep {
-
-  .p-inputtext:focus-visible,
-  .p-inputtextarea:focus-visible,
-  .p-button:focus-visible {
-    outline: 2px solid #3b82f6;
-    outline-offset: 2px;
-  }
-}
-
 // Print styles
 @media print {
-  .brand-form {
-    .p-button {
-      display: none;
-    }
+  form {
 
-    .text-red-500 {
+    .p-button,
+    small.text-red-500 {
       display: none;
     }
   }
-}
-
-.p-invalid {
-  border-color: #ef4444 !important; // Tailwind's red-500
 }
 
 .layout-menu ul a:hover {

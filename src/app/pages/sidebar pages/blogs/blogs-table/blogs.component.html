@@ -1,0 +1,17 @@
+<h2>Our Blogs</h2>
+
+<div class="card">
+    <div class="flex justify-end">
+        <p-button label="Add Blog" [routerLink]="['/pages/blogs', 'add']" class="ms-auto mb-5" [fluid]="false"></p-button>
+    </div>
+    <app-table-data 
+        [data]="BlogsList()" 
+        [loading]="loading()" 
+        [columns]="tableColumns"
+        [globalFilterFields]="globalFilterFields"
+        editRoutePrefix="/pages/blogs"
+        [hasDelete]="true"
+        deleteEntityName="Blog"
+        (delete)="deleteBlog($event)">
+    </app-table-data>
+</div>

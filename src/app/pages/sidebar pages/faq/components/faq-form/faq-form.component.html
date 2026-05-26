@@ -1,0 +1,47 @@
+<p-dialog [header]="mode() === 'add' ? 'Add FAQ' : 'Edit FAQ'" [modal]="true" [(visible)]="visible" [style]="{ width: '50%' }">
+    <form [formGroup]="faqForm()" (ngSubmit)="submit()">
+        <div class="flex flex-col gap-4 mb-4">
+            <label for="question_en" class="required font-semibold">English Question</label>
+            <input pInputText id="question_en" formControlName="question_en" [class]="{ 'p-invalid': isInvalid('question_en') }" autocomplete="off" />
+            @if (isInvalid('question_en')) {
+                <small class="text-red-500">English question is required</small>
+            }
+        </div>
+
+        <div class="flex flex-col gap-4 mb-8">
+            <label for="answer_en" class="required font-semibold">English Answer</label>
+            <p-editor formControlName="answer_en" [style]="{ height: '320px' }" [class]="{ 'p-invalid': isInvalid('answer_en') }" [modules]="editorConfig.modules" [placeholder]="editorConfig.placeholder" styleClass="prose prose-sm max-w-none"></p-editor>
+            @if (isInvalid('answer_en')) {
+                <small class="text-red-500">English answer is required</small>
+            }
+        </div>
+
+        <div class="flex flex-col gap-4 mb-4">
+            <label for="question_ar" class="required font-semibold">Arabic Question</label>
+            <input pInputText id="question_ar" formControlName="question_ar" [class]="{ 'p-invalid': isInvalid('question_ar') }" autocomplete="off" />
+            @if (isInvalid('question_ar')) {
+                <small class="text-red-500">Arabic question is required</small>
+            }
+        </div>
+
+        <div class="flex flex-col gap-4 mb-8">
+            <label for="answer_ar" class="required font-semibold">Arabic Answer</label>
+            <p-editor
+                formControlName="answer_ar"
+                [formats]="['bold', 'italic', 'underline', 'strike', 'list', 'script', 'indent', 'direction', 'align', 'header']"
+                [style]="{ height: '320px' }"
+                [class]="{ 'p-invalid': isInvalid('answer_ar') }"
+                [modules]="editorConfig.modules"
+                [placeholder]="editorConfig.placeholder"
+                styleClass="prose prose-sm max-w-none"
+            ></p-editor>
+            @if (isInvalid('answer_ar')) {
+                <small class="text-red-500">Arabic answer is required</small>
+            }
+        </div>
+
+        <div class="flex justify-end">
+            <button pButton type="submit" [loading]="submitting()" label="Save"></button>
+        </div>
+    </form>
+</p-dialog>

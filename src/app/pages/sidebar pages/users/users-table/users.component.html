@@ -1,0 +1,19 @@
+<h2>Our Admins</h2>
+<div class="card">
+    <div class="flex justify-end">
+        <p-button label="Add Admin" [routerLink]="['/pages/admins', 'add']" class="ms-auto mb-5" [fluid]="false"></p-button>
+    </div>
+
+    <app-table-data 
+        [data]="adminsList()" 
+        [loading]="loading()" 
+        [columns]="tableColumns"
+        [globalFilterFields]="globalFilterFields"
+        editRoutePrefix="/pages/admins"
+        [hasDelete]="true"
+        deleteEntityName="admin"
+        (delete)="deleteAdmin($event)">
+    </app-table-data>
+</div>
+
+<p-toast></p-toast>

@@ -1,0 +1,16 @@
+<h2>Countries</h2>
+<div class="card">
+    <div class="flex justify-end">
+        <p-button label="Add Country" [routerLink]="['/pages/countries', 'add']" class="ms-auto mb-5" [fluid]="false"></p-button>
+    </div>
+    <app-table-data 
+        [data]="countries()" 
+        [loading]="loading()" 
+        [columns]="tableColumns"
+        [globalFilterFields]="globalFilterFields"
+        editRoutePrefix="/pages/countries"
+        [hasDelete]="true"
+        deleteEntityName="Country"
+        (delete)="deleteCountry($event)">
+    </app-table-data>
+</div>

@@ -1,0 +1,147 @@
+<div class="flex flex-col gap-4 w-full">
+    <!-- Header -->
+    @if (label) {
+        <div class="flex items-center justify-between">
+            <label class="font-semibold text-lg text-gray-800 m-0">{{ label }}</label>
+        </div>
+    }
+
+    <!-- Single File Mode with File Selected -->
+    @if (!multiple && files().length === 1) {
+        <div class="relative w-full h-64 rounded-xl overflow-hidden border border-gray-200 shadow-sm group bg-gray-50">
+            <!-- Preview Image -->
+            @if (files()[0].isImage && files()[0].previewUrl) {
+                <img [src]="files()[0].previewUrl" class="w-full h-full object-contain bg-black/5" />
+            } @else {
+                <!-- Generic File Preview -->
+                <div class="w-full h-full bg-blue-50 flex flex-col items-center justify-center">
+                    <i class="pi pi-file text-5xl text-blue-400 mb-2"></i>
+                    <span class="font-medium text-gray-700 truncate px-4 max-w-full">{{ files()[0].name }}</span>
+                    <span class="text-sm text-gray-500">{{ files()[0].sizeFormatted }}</span>
+                </div>
+            }
+
+            <!-- Hover Overlay -->
+            <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 backdrop-blur-sm">
+                
+                <!-- Download -->
+                <button type="button" (click)="downloadFile(files()[0])" class="w-12 h-12 rounded-full bg-white/20 hover:bg-blue-600 text-white flex items-center justify-center transition-colors shadow-lg backdrop-blur-md" title="Download">
+                    <i class="pi pi-download text-xl"></i>
+                </button>
+
+                <!-- Edit / Replace -->
+                <button type="button" (click)="fileInput.click()" class="w-12 h-12 rounded-full bg-white/20 hover:bg-green-600 text-white flex items-center justify-center transition-colors shadow-lg backdrop-blur-md" title="Replace File">
+                    <i class="pi pi-pencil text-xl"></i>
+                </button>
+
+                <!-- Delete -->
+                <button type="button" (click)="removeAll()" class="w-12 h-12 rounded-full bg-white/20 hover:bg-red-600 text-white flex items-center justify-center transition-colors shadow-lg backdrop-blur-md" title="Delete">
+                    <i class="pi pi-trash text-xl"></i>
+                </button>
+
+            </div>
+
+            <!-- Hidden input for the edit button -->
+            <input 
+                #fileInput 
+                type="file" 
+                class="hidden" 
+                [accept]="accept" 
+                [multiple]="false" 
+                [disabled]="isDisabled()"
+                (change)="onFileSelect($event)" 
+            />
+        </div>
+    } @else {
+        <!-- Standard Drop Zone (Empty Single OR Multiple Mode) -->
+        <div 
+            class="border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center transition-colors cursor-pointer min-h-64"
+            [ngClass]="{
+                'border-blue-500 bg-blue-50/50': isDragging(),
+                'border-gray-300 hover:border-blue-400 bg-gray-50/30': !isDragging(),
+                'opacity-50 cursor-not-allowed': isDisabled()
+            }"
+            (dragover)="onDragOver($event)"
+            (dragleave)="onDragLeave($event)"
+            (drop)="onDrop($event)"
+            (click)="fileInput.click()"
+        >
+            <div class="w-12 h-12 rounded-full border-2 border-blue-500 flex items-center justify-center mb-4 text-blue-600 bg-white shadow-sm">
+                <i class="pi pi-cloud-upload text-xl"></i>
+            </div>
+            
+            <p class="text-gray-700 mb-2 font-medium text-lg">
+                Drag & drop or <span class="text-blue-600 cursor-pointer hover:underline">browse file</span>
+            </p>
+            
+            <p class="text-red-500 text-sm flex items-center gap-1 font-medium mt-1">
+                <i class="pi pi-exclamation-triangle"></i> Max file size : {{ maxFileSizeMB }}MB
+            </p>
+
+            <input 
+                #fileInput 
+                type="file" 
+                class="hidden" 
+                [accept]="accept" 
+                [multiple]="multiple" 
+                [disabled]="isDisabled()"
+                (change)="onFileSelect($event)" 
+            />
+        </div>
+    }
+
+    @if (error()) {
+        <small class="text-red-500 font-medium">{{ error() }}</small>
+    }
+
+    <!-- Multiple Mode List Previews -->
+    @if (multiple && files().length > 0) {
+        <div class="flex flex-col gap-3 mt-2">
+            @for (f of files(); track $index) {
+                <div class="flex items-center justify-between p-3 bg-[#f8fbff] rounded-lg border border-blue-100 shadow-sm">
+                    <div class="flex items-center gap-4 overflow-hidden w-full">
+                        <!-- Icon or Image Preview -->
+                        <div class="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center shrink-0 overflow-hidden text-blue-500 relative">
+                            @if (f.isImage && f.previewUrl) {
+                                <img [src]="f.previewUrl" class="w-full h-full object-cover" />
+                            } @else {
+                                <div class="flex flex-col items-center justify-center w-full h-full">
+                                    <i class="pi pi-file text-xl mb-0.5"></i>
+                                    <span class="text-[9px] uppercase font-bold absolute bottom-1 bg-white/90 px-1 rounded text-blue-700 shadow-sm">{{ f.name.includes('.') ? f.name.split('.').pop()?.slice(0, 4) : 'FILE' }}</span>
+                                </div>
+                            }
+                        </div>
+                        
+                        <!-- Details -->
+                        <div class="flex flex-col truncate w-full pr-2">
+                            <span class="font-medium text-gray-800 truncate text-sm">{{ f.name }}</span>
+                            <span class="text-xs text-gray-400 mt-0.5">
+                                {{ f.name.includes('.') ? f.name.split('.').pop() : 'file' }} | {{ f.sizeFormatted }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex items-center gap-2 shrink-0 ml-2">
+                        <button 
+                            type="button" 
+                            (click)="downloadFile(f)"
+                            class="w-9 h-9 rounded-md bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center transition-colors shadow-sm"
+                        >
+                            <i class="pi pi-download"></i>
+                        </button>
+                        
+                        <button 
+                            type="button" 
+                            (click)="removeFile($index)"
+                            [disabled]="isDisabled()"
+                            class="w-9 h-9 rounded-md border border-red-500 text-red-500 hover:bg-red-50 flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm bg-white"
+                        >
+                            <i class="pi pi-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

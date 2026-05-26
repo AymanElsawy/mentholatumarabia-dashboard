@@ -1,0 +1,287 @@
+<app-page-header [title]="id() === 'add' ? 'Add Brand' : 'Edit Brand'"></app-page-header>
+
+<form [formGroup]="brandForm" (ngSubmit)="submitForm()">
+    @if (loading()) {
+        <div class="flex items-center justify-center h-100">
+            <p-progress-spinner ariaLabel="loading" />
+        </div>
+    } @else {
+        <div class="card p-6 flex flex-col gap-6">
+
+            <!-- Grid Container -->
+            <div class="grid grid-cols-12 gap-4">
+
+                <!-- English Name -->
+                <div class="col-span-12 md:col-span-6">
+                    <label for="name_en" class="block font-medium mb-2 required">English Name</label>
+                    <input
+                        formControlName="name_en"
+                        pInputText
+                        id="name_en"
+                        type="text"
+                        [class]="getInputClasses('name_en')"
+                        [ngClass]="{ 'p-invalid': isFieldInvalid('name_en') }"
+                        placeholder="Enter English name"
+                    />
+
+                    @if (isFieldInvalid('name_en')) {
+                        <small class="text-red-500">
+                            {{ getFieldErrorMessage('name_en') }}
+                        </small>
+                    }
+                </div>
+
+                <!-- Arabic Name -->
+                <div class="col-span-12 md:col-span-6">
+                    <label for="name_ar" class="block font-medium mb-2 required">Arabic Name</label>
+                    <input
+                        formControlName="name_ar"
+                        pInputText
+                        id="name_ar"
+                        type="text"
+                        [class]="getInputClasses('name_ar')"
+                        [ngClass]="{ 'p-invalid': isFieldInvalid('name_ar') }"
+                        placeholder="Enter Arabic name"
+                    />
+
+                    @if (isFieldInvalid('name_ar')) {
+                        <small class="text-red-500">
+                            {{ getFieldErrorMessage('name_ar') }}
+                        </small>
+                    }
+                </div>
+
+                <!-- Banner Image Upload -->
+                <div class="col-span-12">
+                    <p-fieldset legend="Banner Image">
+                        <app-file-upload
+                            formControlName="banner_image"
+                            accept="image/*"
+                            [maxFileSizeMB]="10"
+                            label=""
+                            [class.p-invalid]="isFieldInvalid('banner_image')"
+                        ></app-file-upload>
+
+                        @if (isFieldInvalid('banner_image')) {
+                            <small class="text-red-500">
+                                {{ getFieldErrorMessage('banner_image') }}
+                            </small>
+                        }
+                    </p-fieldset>
+                </div>
+
+                <!-- Banner Title (English & Arabic) -->
+                <div class="col-span-12 md:col-span-6">
+                    <label for="banner_title_en" class="block font-medium mb-2 required">
+                        Banner Title (English)
+                    </label>
+
+                    <input
+                        formControlName="banner_title_en"
+                        pInputText
+                        id="banner_title_en"
+                        type="text"
+                        [class]="getInputClasses('banner_title_en')"
+                        [ngClass]="{ 'p-invalid': isFieldInvalid('banner_title_en') }"
+                        placeholder="Enter banner title in English"
+                    />
+
+                    @if (isFieldInvalid('banner_title_en')) {
+                        <small class="text-red-500">
+                            {{ getFieldErrorMessage('banner_title_en') }}
+                        </small>
+                    }
+                </div>
+
+                <div class="col-span-12 md:col-span-6">
+                    <label for="banner_title_ar" class="block font-medium mb-2 required">
+                        Banner Title (Arabic)
+                    </label>
+
+                    <input
+                        formControlName="banner_title_ar"
+                        pInputText
+                        id="banner_title_ar"
+                        type="text"
+                        [class]="getInputClasses('banner_title_ar')"
+                        [ngClass]="{ 'p-invalid': isFieldInvalid('banner_title_ar') }"
+                        placeholder="Enter banner title in Arabic"
+                    />
+
+                    @if (isFieldInvalid('banner_title_ar')) {
+                        <small class="text-red-500">
+                            {{ getFieldErrorMessage('banner_title_ar') }}
+                        </small>
+                    }
+                </div>
+
+                <!-- Banner Description -->
+                <div class="col-span-12 md:col-span-6">
+                    <label for="banner_desc_en" class="block font-medium mb-2 required">
+                        Banner Description (English)
+                    </label>
+
+                    <textarea
+                        formControlName="banner_desc_en"
+                        pTextarea
+                        id="banner_desc_en"
+                        [class]="getInputClasses('banner_desc_en')"
+                        [ngClass]="{ 'p-invalid': isFieldInvalid('banner_desc_en') }"
+                        placeholder="Enter banner description in English"
+                        rows="4"
+                    ></textarea>
+
+                    @if (isFieldInvalid('banner_desc_en')) {
+                        <small class="text-red-500">
+                            {{ getFieldErrorMessage('banner_desc_en') }}
+                        </small>
+                    }
+                </div>
+
+                <div class="col-span-12 md:col-span-6">
+                    <label for="banner_desc_ar" class="block font-medium mb-2 required">
+                        Banner Description (Arabic)
+                    </label>
+
+                    <textarea
+                        formControlName="banner_desc_ar"
+                        pTextarea
+                        id="banner_desc_ar"
+                        [class]="getInputClasses('banner_desc_ar')"
+                        [ngClass]="{ 'p-invalid': isFieldInvalid('banner_desc_ar') }"
+                        placeholder="Enter banner description in Arabic"
+                        rows="4"
+                    ></textarea>
+
+                    @if (isFieldInvalid('banner_desc_ar')) {
+                        <small class="text-red-500">
+                            {{ getFieldErrorMessage('banner_desc_ar') }}
+                        </small>
+                    }
+                </div>
+            </div>
+
+            <!-- Our Brands Page Data Section -->
+            <p-fieldset class="my-5 w-full" legend="Our Brands Page Data">
+                <div class="grid grid-cols-12 gap-4">
+
+                    <div class="col-span-12 md:col-span-6">
+                        <label for="title_en" class="block font-medium mb-2 required">
+                            Title (English)
+                        </label>
+
+                        <input
+                            formControlName="title_en"
+                            pInputText
+                            id="title_en"
+                            type="text"
+                            [class]="getInputClasses('title_en')"
+                            [ngClass]="{ 'p-invalid': isFieldInvalid('title_en') }"
+                            placeholder="Enter title in English"
+                        />
+
+                        @if (isFieldInvalid('title_en')) {
+                            <small class="text-red-500">
+                                {{ getFieldErrorMessage('title_en') }}
+                            </small>
+                        }
+                    </div>
+
+                    <div class="col-span-12 md:col-span-6">
+                        <label for="title_ar" class="block font-medium mb-2 required">
+                            Title (Arabic)
+                        </label>
+
+                        <input
+                            formControlName="title_ar"
+                            pInputText
+                            id="title_ar"
+                            type="text"
+                            [class]="getInputClasses('title_ar')"
+                            [ngClass]="{ 'p-invalid': isFieldInvalid('title_ar') }"
+                            placeholder="Enter title in Arabic"
+                        />
+
+                        @if (isFieldInvalid('title_ar')) {
+                            <small class="text-red-500">
+                                {{ getFieldErrorMessage('title_ar') }}
+                            </small>
+                        }
+                    </div>
+                    <!-- description -->
+                    <div class="col-span-12 md:col-span-6">
+                        <label for="desc_en" class="block font-medium mb-2 required">
+                            Description (English)
+                        </label>
+
+                        <textarea
+                            formControlName="desc_en"
+                            pTextarea
+                            id="desc_en"
+                            [class]="getInputClasses('desc_en')"
+                            [ngClass]="{ 'p-invalid': isFieldInvalid('desc_en') }"
+                            placeholder="Enter description in English"
+                            rows="4"
+                        ></textarea>
+
+                        @if (isFieldInvalid('desc_en')) {
+                            <small class="text-red-500">
+                                {{ getFieldErrorMessage('desc_en') }}
+                            </small>
+                        }
+                    </div>
+                    <div class="col-span-12 md:col-span-6">
+                        <label for="desc_ar" class="block font-medium mb-2 required">
+                            Description (Arabic)
+                        </label>
+
+                        <textarea
+                            formControlName="desc_ar"
+                            pTextarea
+                            id="desc_ar"
+                            [class]="getInputClasses('desc_ar')"
+                            [ngClass]="{ 'p-invalid': isFieldInvalid('desc_ar') }"
+                            placeholder="Enter description in Arabic"
+                            rows="4"
+                        ></textarea>
+
+                        @if (isFieldInvalid('desc_ar')) {
+                            <small class="text-red-500">
+                                {{ getFieldErrorMessage('desc_ar') }}
+                            </small>
+                        }
+                    </div>
+
+                    <!-- Image Upload -->
+                    <div class="col-span-12">
+                        <p-fieldset legend="Image">
+                            <app-file-upload
+                                formControlName="image"
+                                accept="image/*"
+                                [maxFileSizeMB]="10"
+                                label=""
+                                [class.p-invalid]="isFieldInvalid('image')"
+                            ></app-file-upload>
+
+                            @if (isFieldInvalid('image')) {
+                                <small class="text-red-500">
+                                    {{ getFieldErrorMessage('image') }}
+                                </small>
+                            }
+                        </p-fieldset>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="col-span-12 flex justify-end">
+                        <p-button
+                            label="Submit"
+                            type="submit"
+                            [disabled]="!isFormValid"
+                            [loading]="submitting()"
+                        ></p-button>
+                    </div>
+                </div>
+            </p-fieldset>
+        </div>
+    }
+</form>

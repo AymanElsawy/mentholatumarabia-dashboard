@@ -1,0 +1,319 @@
+<app-page-header [title]="id() === 'add' ? 'Add Blog' : 'Edit Blog'"></app-page-header>
+<form [formGroup]="blogForm" (ngSubmit)="submitForm()">
+    @if (loading()) {
+        <div class="flex items-center justify-center h-64">
+            <p-progress-spinner ariaLabel="loading" />
+        </div>
+    } @else {
+        <div class="card flex flex-col gap-6">
+            <!-- Titles -->
+            <div class="flex flex-col md:flex-row gap-4">
+                <div class="w-full">
+                    <label for="title_en" class="required">English Title</label>
+                    <input
+                        id="title_en"
+                        pInputText
+                        formControlName="title_en"
+                        class="w-full"
+                        [class]="{
+                            'p-invalid': isFieldInvalid('title_en')
+                        }"
+                    />
+
+                    @if (isFieldInvalid('title_en')) {
+                        <small class="text-red-500">
+                            {{ getFieldErrorMessage('title_en') }}
+                        </small>
+                    }
+                </div>
+
+                <div class="w-full">
+                    <label for="title_ar" class="required">Arabic Title</label>
+                    <input
+                        id="title_ar"
+                        pInputText
+                        formControlName="title_ar"
+                        class="w-full"
+                        [class]="{
+                            'p-invalid': isFieldInvalid('title_ar')
+                        }"
+                    />
+
+                    @if (isFieldInvalid('title_ar')) {
+                        <small class="text-red-500">
+                            {{ getFieldErrorMessage('title_ar') }}
+                        </small>
+                    }
+                </div>
+            </div>
+
+            <!-- Excerpts -->
+            <div class="flex flex-col md:flex-row gap-4">
+                <div class="w-full">
+                    <label for="excerpt_en" class="required">English Excerpt</label>
+                    <input
+                        id="excerpt_en"
+                        pInputText
+                        formControlName="excerpt_en"
+                        class="w-full"
+                        [class]="{
+                            'p-invalid': isFieldInvalid('excerpt_en')
+                        }"
+                    />
+
+                    @if (isFieldInvalid('excerpt_en')) {
+                        <small class="text-red-500">
+                            {{ getFieldErrorMessage('excerpt_en') }}
+                        </small>
+                    }
+                </div>
+
+                <div class="w-full">
+                    <label for="excerpt_ar" class="required">Arabic Excerpt</label>
+                    <input
+                        id="excerpt_ar"
+                        pInputText
+                        formControlName="excerpt_ar"
+                        class="w-full"
+                        [class]="{
+                            'p-invalid': isFieldInvalid('excerpt_ar')
+                        }"
+                    />
+
+                    @if (isFieldInvalid('excerpt_ar')) {
+                        <small class="text-red-500">
+                            {{ getFieldErrorMessage('excerpt_ar') }}
+                        </small>
+                    }
+                </div>
+            </div>
+            <!-- slugs -->
+            <div class="flex flex-col md:flex-row gap-6 mb-4">
+                <div class="w-full">
+                    <label for="slug_en" class="required">English Slug</label>
+                    <input
+                        id="slug_en"
+                        pInputText
+                        formControlName="slug_en"
+                        class="w-full"
+                        [class]="{
+                            'p-invalid': isFieldInvalid('slug_en')
+                        }"
+                    />
+
+                    @if (isFieldInvalid('slug_en')) {
+                        <small class="text-red-500">
+                            {{ getFieldErrorMessage('slug_en') }}
+                        </small>
+                    }
+                </div>
+
+                <div class="w-full">
+                    <label for="slug_ar" class="required">Arabic Slug</label>
+                    <input
+                        id="slug_ar"
+                        pInputText
+                        formControlName="slug_ar"
+                        class="w-full"
+                        [class]="{
+                            'p-invalid': isFieldInvalid('slug_ar')
+                        }"
+                    />
+
+                    @if (isFieldInvalid('slug_ar')) {
+                        <small class="text-red-500">
+                            {{ getFieldErrorMessage('slug_ar') }}
+                        </small>
+                    }
+                </div>
+            </div>
+            <!-- Content -->
+            <div>
+                <label for="content_en" class="required">English Content</label>
+                <div class="flex flex-col gap-1">
+                    <p-editor
+                        id="content_en"
+                        formControlName="content_en"
+                        [class]="{
+                            'p-invalid': isFieldInvalid('content_en')
+                        }"
+                        [style]="{ height: '320px' }"
+                    />
+                </div>
+
+                @if (isFieldInvalid('content_en')) {
+                    <small class="text-red-500">
+                        {{ getFieldErrorMessage('content_en') }}
+                    </small>
+                }
+            </div>
+
+            <div>
+                <label for="content_ar" class="required">Arabic Content</label>
+
+                <div class="flex flex-col gap-1">
+                    <p-editor
+                        id="content_ar"
+                        formControlName="content_ar"
+                        [class]="{
+                            'p-invalid': isFieldInvalid('content_ar')
+                        }"
+                        [style]="{ height: '320px' }"
+                    />
+                </div>
+
+                @if (isFieldInvalid('content_ar')) {
+                    <small class="text-red-500">
+                        {{ getFieldErrorMessage('content_ar') }}
+                    </small>
+                }
+            </div>
+
+            <!-- Images -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <p-fieldset legend="Thumbnail">
+                        <app-file-upload formControlName="thumbnail" accept="image/*" [maxFileSizeMB]="10" label="" [class.p-invalid]="isFieldInvalid('thumbnail')"></app-file-upload>
+                        @if (isFieldInvalid('thumbnail')) {
+                            <small class="text-red-500">
+                                {{ getFieldErrorMessage('thumbnail') }}
+                            </small>
+                        }
+                    </p-fieldset>
+                </div>
+
+                <div>
+                    <p-fieldset legend="Main Image">
+                        <app-file-upload formControlName="image" accept="image/*" [maxFileSizeMB]="10" label="" [class.p-invalid]="isFieldInvalid('image')"></app-file-upload>
+                        @if (isFieldInvalid('image')) {
+                            <small class="text-red-500">
+                                {{ getFieldErrorMessage('image') }}
+                            </small>
+                        }
+                    </p-fieldset>
+                </div>
+            </div>
+
+            <!-- Meta -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="meta_title_en">Meta Title (EN)</label>
+                    <input
+                        id="meta_title_en"
+                        pInputText
+                        formControlName="meta_title_en"
+                        class="w-full"
+                        [class]="{
+                            'p-invalid': isFieldInvalid('meta_title_en')
+                        }"
+                    />
+
+                    @if (isFieldInvalid('meta_title_en')) {
+                        <small class="text-red-500">
+                            {{ getFieldErrorMessage('meta_title_en') }}
+                        </small>
+                    }
+                </div>
+
+                <div>
+                    <label for="meta_title_ar" class="required">Meta Title (AR)</label>
+                    <input
+                        id="meta_title_ar"
+                        pInputText
+                        formControlName="meta_title_ar"
+                        class="w-full"
+                        [class]="{
+                            'p-invalid': isFieldInvalid('meta_title_ar')
+                        }"
+                    />
+
+                    @if (isFieldInvalid('meta_title_ar')) {
+                        <small class="text-red-500">
+                            {{ getFieldErrorMessage('meta_title_ar') }}
+                        </small>
+                    }
+                </div>
+
+                <div>
+                    <label for="meta_description_en" class="required">Meta Description (EN)</label>
+                    <input
+                        id="meta_description_en"
+                        pInputText
+                        formControlName="meta_description_en"
+                        class="w-full"
+                        [class]="{
+                            'p-invalid': isFieldInvalid('meta_description_en')
+                        }"
+                    />
+
+                    @if (isFieldInvalid('meta_description_en')) {
+                        <small class="text-red-500">
+                            {{ getFieldErrorMessage('meta_description_en') }}
+                        </small>
+                    }
+                </div>
+
+                <div>
+                    <label for="meta_description_ar" class="required">Meta Description (AR)</label>
+                    <input
+                        id="meta_description_ar"
+                        pInputText
+                        formControlName="meta_description_ar"
+                        class="w-full"
+                        [class]="{
+                            'p-invalid': isFieldInvalid('meta_description_ar')
+                        }"
+                    />
+
+                    @if (isFieldInvalid('meta_description_ar')) {
+                        <small class="text-red-500">
+                            {{ getFieldErrorMessage('meta_description_ar') }}
+                        </small>
+                    }
+                </div>
+
+                <div>
+                    <label for="meta_keywords_en" class="required">Meta Keywords (EN)</label>
+                    <input
+                        id="meta_keywords_en"
+                        pInputText
+                        formControlName="meta_keywords_en"
+                        class="w-full"
+                        [class]="{
+                            'p-invalid': isFieldInvalid('meta_keywords_en')
+                        }"
+                    />
+
+                    @if (isFieldInvalid('meta_keywords_en')) {
+                        <small class="text-red-500">
+                            {{ getFieldErrorMessage('meta_keywords_en') }}
+                        </small>
+                    }
+                </div>
+
+                <div>
+                    <label for="meta_keywords_ar" class="required">Meta Keywords (AR)</label>
+                    <input
+                        id="meta_keywords_ar"
+                        pInputText
+                        formControlName="meta_keywords_ar"
+                        class="w-full"
+                        [class]="{
+                            'p-invalid': isFieldInvalid('meta_keywords_ar')
+                        }"
+                    />
+
+                    @if (isFieldInvalid('meta_keywords_ar')) {
+                        <small class="text-red-500">
+                            {{ getFieldErrorMessage('meta_keywords_ar') }}
+                        </small>
+                    }
+                </div>
+            </div>
+
+            <div class="flex justify-end mt-6">
+                <p-button label="Submit" type="submit" [loading]="submitting()"></p-button>
+            </div>
+        </div>
+    }
+</form>

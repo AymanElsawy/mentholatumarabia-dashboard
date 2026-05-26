@@ -11,50 +11,20 @@ export class CountriesService {
     constructor(private http: HttpClient) {}
 
     getCountries(): Observable<any> {
-        const token = localStorage.getItem('dbToken');
-
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`
-        });
-
-        return this.http.get(`${this.baseUrl}api/dashboard/countries`, { headers });
+        return this.http.get(`${this.baseUrl}api/dashboard/countries`);
     }
 
     getSingleCountry(id: string): Observable<any> {
-        const token = localStorage.getItem('dbToken');
-
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`
-        });
-
-        return this.http.get(`${this.baseUrl}api/dashboard/countries/${id}`, { headers });
+        return this.http.get(`${this.baseUrl}api/dashboard/countries/${id}`);
     }
 
     UpdateCountry(id: string, form: any): Observable<any> {
-        const token = localStorage.getItem('dbToken');
-
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`
-        });
-
-        return this.http.post(`${this.baseUrl}api/dashboard/countries/${id}`, form, { headers });
+        return this.http.post(`${this.baseUrl}api/dashboard/countries/${id}`, form);
     }
     AddCountry(form: any): Observable<any> {
-        const token = localStorage.getItem('dbToken');
-
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`
-        });
-
-        return this.http.post(`${this.baseUrl}api/dashboard/countries`, form, { headers });
+        return this.http.post(`${this.baseUrl}api/dashboard/countries`, form);
     }
     DeleteCountry(id: string): Observable<any> {
-        const token = localStorage.getItem('dbToken');
-
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`
-        });
-
-        return this.http.delete(`${this.baseUrl}api/dashboard/countries/${id}`, { headers });
+        return this.http.delete(`${this.baseUrl}api/dashboard/countries/${id}`);
     }
 }

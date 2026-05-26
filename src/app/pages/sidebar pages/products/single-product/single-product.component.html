@@ -1,0 +1,224 @@
+<app-page-header [title]="id() != 'add' ? 'Edit Product' : 'Add Product'"></app-page-header>
+
+@if (loading()) {
+    <div class="flex items-center justify-center h-64">
+        <p-progress-spinner ariaLabel="loading" />
+    </div>
+} @else {
+    <form [formGroup]="productForm">
+        <div class="card flex flex-col gap-4">
+            <p-fluid>
+                <div class="flex mt-8">
+                    <div class="card flex flex-col gap-6 w-full">
+                        <!-- names -->
+                        <div class="flex flex-col md:flex-row gap-6">
+                            <div class="flex flex-wrap gap-2 w-full">
+                                <label for="name-en" class="required">English Name</label>
+                                <input pInputText formControlName="name_en" id="name-en" type="text" [class.p-invalid]="isFieldInvalid('name_en')" />
+                                @if (isFieldInvalid('name_en')) {
+                                    <small class="text-red-500">{{ getFieldErrorMessage('name_en') }}</small>
+                                }
+                            </div>
+                            <div class="flex flex-wrap gap-2 w-full">
+                                <label for="name-ar" class="required">Arabic Name</label>
+                                <input pInputText formControlName="name_ar" id="name-ar" type="text" [class.p-invalid]="isFieldInvalid('name_ar')" />
+                                @if (isFieldInvalid('name_ar')) {
+                                    <small class="text-red-500">{{ getFieldErrorMessage('name_ar') }}</small>
+                                }
+                            </div>
+                        </div>
+                        <!-- slug -->
+                        <div class="flex flex-col md:flex-row gap-6">
+                            <div class="flex flex-wrap gap-2 w-full">
+                                <label for="slug-en" class="required">English Slug</label>
+                                <input pInputText formControlName="slug_en" id="slug-en" type="text" [class.p-invalid]="isFieldInvalid('slug_en')" />
+                                @if (isFieldInvalid('slug_en')) {
+                                    <small class="text-red-500">{{ getFieldErrorMessage('slug_en') }}</small>
+                                }
+                            </div>
+                            <div class="flex flex-wrap gap-2 w-full">
+                                <label for="slug-ar" class="required">Arabic Slug</label>
+                                <input pInputText formControlName="slug_ar" id="slug-ar" type="text" [class.p-invalid]="isFieldInvalid('slug_ar')" />
+                                @if (isFieldInvalid('slug_ar')) {
+                                    <small class="text-red-500">{{ getFieldErrorMessage('slug_ar') }}</small>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- brand -->
+                        <div class="flex flex-col gap-2 w-full">
+                            <label for="brand" class="required">Brand</label>
+                            <select formControlName="brand_id" class="border rounded-md px-4 py-2 w-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" [class]="{ 'border-red-500': isFieldInvalid('brand_id') }">
+                                <option value="" disabled selected>Select a Brand</option>
+                                @for (brand of brands; track brand.id) {
+                                    <option [value]="brand.id">
+                                        {{ brand.name_en }}
+                                    </option>
+                                }
+                            </select>
+                            @if (isFieldInvalid('brand_id')) {
+                                <small class="text-red-500">{{ getFieldErrorMessage('brand_id') }}</small>
+                            }
+                        </div>
+
+                        <!-- descriptions -->
+                        <div class="flex flex-wrap w-full">
+                            <label for="description_en" class="block mb-1 required">English Description</label>
+                            <textarea pTextarea id="description_en" formControlName="description_en" rows="4" [class.p-invalid]="isFieldInvalid('description_en')"></textarea>
+                            @if (isFieldInvalid('description_en')) {
+                                <small class="text-red-500">{{ getFieldErrorMessage('description_en') }}</small>
+                            }
+                        </div>
+
+                        <div class="flex flex-wrap w-full">
+                            <label for="description_ar" class="block mb-1 required">Arabic Description</label>
+                            <textarea pTextarea id="description_ar" formControlName="description_ar" rows="4" [class.p-invalid]="isFieldInvalid('description_ar')"></textarea>
+                            @if (isFieldInvalid('description_ar')) {
+                                <small class="text-red-500">{{ getFieldErrorMessage('description_ar') }}</small>
+                            }
+                        </div>
+
+                        <!-- details -->
+                        <div class="flex flex-wrap w-full">
+                            <label for="details_en" class="block mb-1 required">English Details</label>
+                            <textarea pTextarea id="details_en" formControlName="details_en" rows="4" [class.p-invalid]="isFieldInvalid('details_en')"></textarea>
+                            @if (isFieldInvalid('details_en')) {
+                                <small class="text-red-500">{{ getFieldErrorMessage('details_en') }}</small>
+                            }
+                        </div>
+
+                        <div class="flex flex-wrap w-full">
+                            <label for="details_ar" class="block mb-1 required">Arabic Details</label>
+                            <textarea pTextarea id="details_ar" formControlName="details_ar" rows="4" [class.p-invalid]="isFieldInvalid('details_ar')"></textarea>
+                            @if (isFieldInvalid('details_ar')) {
+                                <small class="text-red-500">{{ getFieldErrorMessage('details_ar') }}</small>
+                            }
+                        </div>
+
+                        <!-- countries and where to buy -->
+                        <p-fieldset legend="Where to Buy">
+                            <p>URL must be valid (start with http or https)</p>
+                            <div class="grid gap-6" formArrayName="countries">
+                                <p-accordion [multiple]="true">
+                                    @for (countryControl of countriesControls; track i; let i = $index) {
+                                        <p-accordion-panel [value]="i">
+                                            <p-accordion-header>{{ countriesList[i]?.name_en || 'Country ' + (i + 1) }}</p-accordion-header>
+                                            <p-accordion-content>
+                                                <div [formGroupName]="i" class="flex flex-col md:flex-row gap-6 my-4">
+                                                    <div class="flex flex-wrap gap-2 w-full">
+                                                        <label for="country-name-{{ i }}" class="required">Country Name</label>
+                                                        <input readonly pInputText [placeholder]="countriesList[i]?.name_en" id="country-name-{{ i }}" type="text" />
+                                                    </div>
+
+                                                    <div class="flex flex-col gap-2 w-full">
+                                                        <label>Where To Buy</label>
+                                                        <div formArrayName="where_to_buy_link" class="flex flex-col gap-2">
+                                                            @for (linkControl of getWhereToBuyLinks(i).controls; track j; let j = $index) {
+                                                                <div class="flex items-center gap-2">
+                                                                    <input pInputText [id]="'where-to-buy-' + i + '-' + j" type="text" [formControlName]="j" class="w-full" placeholder="Enter URL" />
+                                                                    @if (j === getWhereToBuyLinks(i).controls.length - 1) {
+                                                                        <p-button icon="pi pi-plus" (onClick)="addWhereToBuyLink(i)" [rounded]="true" severity="success"></p-button>
+                                                                    }
+                                                                    @if (getWhereToBuyLinks(i).controls.length > 1) {
+                                                                        <p-button icon="pi pi-trash" (onClick)="removeWhereToBuyLink(i, j)" [rounded]="true" severity="danger"></p-button>
+                                                                    }
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="flex flex-col gap-2 w-full">
+                                                        <label for="available_in_pharmacies-{{ i }}">Available in Pharmacies</label>
+                                                        <p-checkbox id="available_in_pharmacies-{{ i }}" [formControl]="getAvailableInPharmaciesControl(i)" [trueValue]="1" [falseValue]="0" [binary]="true"></p-checkbox>
+                                                    </div>
+                                                </div>
+                                            </p-accordion-content>
+                                        </p-accordion-panel>
+                                    }
+                                </p-accordion>
+                            </div>
+                            @if (isFieldInvalid('countries')) {
+                                <small class="text-red-500">{{ getFieldErrorMessage('countries') }}</small>
+                            }
+                        </p-fieldset>
+
+                        <!-- meta -->
+                        <p-fieldset class="my-5" legend="Meta Data">
+                            <div class="flex flex-col md:flex-row gap-6 my-4">
+                                <div class="flex flex-wrap gap-2 w-full">
+                                    <label for="meta_description_en" class="required">English Meta Description</label>
+                                    <input pInputText formControlName="meta_description_en" id="meta_description_en" type="text" [class.p-invalid]="isFieldInvalid('meta_description_en')" />
+                                    @if (isFieldInvalid('meta_description_en')) {
+                                        <small class="text-red-500">{{ getFieldErrorMessage('meta_description_en') }}</small>
+                                    }
+                                </div>
+                                <div class="flex flex-wrap gap-2 w-full">
+                                    <label for="meta_description_ar" class="required">Arabic Meta Description</label>
+                                    <input pInputText formControlName="meta_description_ar" id="meta_description_ar" type="text" [class.p-invalid]="isFieldInvalid('meta_description_ar')" />
+                                    @if (isFieldInvalid('meta_description_ar')) {
+                                        <small class="text-red-500">{{ getFieldErrorMessage('meta_description_ar') }}</small>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col md:flex-row gap-6 my-4">
+                                <div class="flex flex-wrap gap-2 w-full">
+                                    <label for="meta_keywords_en" class="required">English Meta Keywords</label>
+                                    <input pInputText formControlName="meta_keywords_en" id="meta_keywords_en" type="text" [class.p-invalid]="isFieldInvalid('meta_keywords_en')" />
+                                    @if (isFieldInvalid('meta_keywords_en')) {
+                                        <small class="text-red-500">{{ getFieldErrorMessage('meta_keywords_en') }}</small>
+                                    }
+                                </div>
+                                <div class="flex flex-wrap gap-2 w-full">
+                                    <label for="meta_keywords_ar" class="required">Arabic Meta Keywords</label>
+                                    <input pInputText formControlName="meta_keywords_ar" id="meta_keywords_ar" type="text" [class.p-invalid]="isFieldInvalid('meta_keywords_ar')" />
+                                    @if (isFieldInvalid('meta_keywords_ar')) {
+                                        <small class="text-red-500">{{ getFieldErrorMessage('meta_keywords_ar') }}</small>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col md:flex-row gap-6 my-4">
+                                <div class="flex flex-wrap gap-2 w-full">
+                                    <label for="meta_title_en" class="required">English Meta Title</label>
+                                    <input pInputText formControlName="meta_title_en" id="meta_title_en" type="text" [class.p-invalid]="isFieldInvalid('meta_title_en')" />
+                                    @if (isFieldInvalid('meta_title_en')) {
+                                        <small class="text-red-500">{{ getFieldErrorMessage('meta_title_en') }}</small>
+                                    }
+                                </div>
+                                <div class="flex flex-wrap gap-2 w-full">
+                                    <label for="meta_title_ar" class="required">Arabic Meta Title</label>
+                                    <input pInputText formControlName="meta_title_ar" id="meta_title_ar" type="text" [class.p-invalid]="isFieldInvalid('meta_title_ar')" />
+                                    @if (isFieldInvalid('meta_title_ar')) {
+                                        <small class="text-red-500">{{ getFieldErrorMessage('meta_title_ar') }}</small>
+                                    }
+                                </div>
+                            </div>
+                        </p-fieldset>
+
+                        <!-- product Images -->
+                        <p-fieldset legend="Product Images">
+                            <app-file-upload formControlName="images" accept="image/*" [multiple]="true" [maxFileSizeMB]="10" label="" [class.p-invalid]="isFieldInvalid('images')"></app-file-upload>
+                            @if (isFieldInvalid('images')) {
+                                <small class="text-red-500">{{ getFieldErrorMessage('images') }}</small>
+                            }
+                        </p-fieldset>
+
+                        <!-- Thumbnail -->
+                        <p-fieldset legend="Thumbnail">
+                            <app-file-upload formControlName="thumbnail" accept="image/*" [maxFileSizeMB]="10" label="" [class.p-invalid]="isFieldInvalid('thumbnail')"></app-file-upload>
+                            @if (isFieldInvalid('thumbnail')) {
+                                <small class="text-red-500">{{ getFieldErrorMessage('thumbnail') }}</small>
+                            }
+                        </p-fieldset>
+
+                        <!-- Submit -->
+                        <div class="flex justify-end">
+                            <p-button (click)="submitForm()" label="Submit" type="Submit" size="large" [loading]="submitting()" [fluid]="false"></p-button>
+                        </div>
+                    </div>
+                </div>
+            </p-fluid>
+        </div>
+    </form>
+}

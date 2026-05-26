@@ -1,0 +1,124 @@
+<p-table #dt1 [value]="loading ? $any([1, 2, 3, 4, 5]) : data" dataKey="id" [rows]="10" [rowHover]="true" [showGridlines]="true" [paginator]="true" [globalFilterFields]="globalFilterFields">
+    <ng-template #caption>
+        <div class="flex justify-between items-center flex-column sm:flex-row">
+            <button pButton label="Clear" class="p-button-outlined mb-2" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+            <p-iconfield iconPosition="left" class="ml-auto">
+                <p-inputicon>
+                    <i class="pi pi-search"></i>
+                </p-inputicon>
+                <input pInputText #filter type="text" (input)="onGlobalFilter(dt1, $event)" placeholder="Search keyword" />
+            </p-iconfield>
+        </div>
+    </ng-template>
+
+    <ng-template #header>
+        <tr>
+            @for (col of columns; track col.field) {
+                <th style="min-width: 12rem">
+                    <div class="flex justify-between items-center">
+                        {{ col.header }}
+                        <p-columnFilter type="text" [field]="col.field" display="menu" [placeholder]="'Search by ' + col.header"></p-columnFilter>
+                    </div>
+                </th>
+            }
+            @if (editRoutePrefix || hasDelete || customActions.length > 0) {
+                <th style="min-width: 12rem">
+                    <div class="flex justify-between items-center">Actions</div>
+                </th>
+            }
+        </tr>
+    </ng-template>
+
+    <ng-template #body let-item>
+        @if (loading) {
+            <tr>
+                @for (col of columns; track col.field) {
+                    <td><p-skeleton></p-skeleton></td>
+                }
+                @if (editRoutePrefix || hasDelete || customActions.length > 0) {
+                    <td><p-skeleton></p-skeleton></td>
+                }
+            </tr>
+        } @else {
+            <tr>
+                @for (col of columns; track col.field) {
+                    <td>
+                        @switch (col.type) {
+                            @case ('link') {
+                                <a [routerLink]="[col.linkPrefix, item.id]">
+                                    {{ col.isTitleCase ? (resolveField(item, col.field) | titlecase) : resolveField(item, col.field) }}
+                                </a>
+                            }
+                            @case ('mailto') {
+                                <a [href]="'mailto:' + resolveField(item, col.field)">
+                                    {{ resolveField(item, col.field) }}
+                                </a>
+                            }
+                            @case ('image') {
+                                <div class="flex justify-center items-center">
+                                    @if (resolveField(item, col.field)) {
+                                        <img [src]="resolveField(item, col.field)" alt="" class="w-16 h-16 object-cover rounded-md border border-gray-300 shadow-sm" />
+                                    } @else {
+                                        <span class="text-gray-500 italic">No Image</span>
+                                    }
+                                </div>
+                            }
+                            @case ('date') {
+                                {{ resolveField(item, col.field) | date: 'MMM d, y' }}
+                            }
+                            @default {
+                                {{ col.isTitleCase ? (resolveField(item, col.field) | titlecase) : resolveField(item, col.field) }}
+                            }
+                        }
+                    </td>
+                }
+                @if (editRoutePrefix || hasDelete || customActions.length > 0) {
+                    <td class=" ">
+                        <div class="flex justify-around self-stretch h-full">
+                            @if (editRoutePrefix) {
+                                <p-button icon="pi pi-pencil" [routerLink]="[editRoutePrefix, item.id]"></p-button>
+                            }
+                            
+                            @for (action of customActions; track $index) {
+                                @if (action.getHref) {
+                                    <a [href]="action.getHref(item)" (click)="action.onClick ? action.onClick(item) : null">
+                                        <p-button [icon]="action.icon" [label]="action.label || ''" [severity]="action.severity || 'primary'"></p-button>
+                                    </a>
+                                } @else {
+                                    <p-button [icon]="action.icon" [label]="action.label || ''" 
+                                              [severity]="action.severity || 'primary'" 
+                                              [routerLink]="action.getRouterLink ? action.getRouterLink(item) : null"
+                                              (click)="action.onClick ? action.onClick(item) : null">
+                                    </p-button>
+                                }
+                            }
+
+                            @if (hasDelete) {
+                                <p-button icon="pi pi-trash" severity="danger" (click)="openConfirmation(item)"></p-button>
+                            }
+                        </div>
+                    </td>
+                }
+            </tr>
+        }
+    </ng-template>
+
+    <ng-template #emptymessage>
+        <tr>
+            <td [attr.colspan]="columns.length + (editRoutePrefix || hasDelete || customActions.length > 0 ? 1 : 0)">
+                No records found.
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<p-dialog header="Confirmation" [(visible)]="displayConfirmation" [style]="{ width: '350px' }" [modal]="true">
+    <div class="flex items-center justify-center">
+        <i class="pi pi-exclamation-triangle mr-4" style="font-size: 2rem"></i>
+        <span>Are you sure you want to delete this {{ deleteEntityName }}?</span>
+    </div>
+    <ng-template #footer>
+        <p-button label="No" icon="pi pi-times" (click)="closeConfirmation(false)" text severity="secondary" />
+        <p-button label="Yes" icon="pi pi-check" (click)="closeConfirmation(true)" severity="danger" outlined autofocus />
+    </ng-template>
+</p-dialog>

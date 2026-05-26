@@ -1,0 +1,38 @@
+<app-page-header title="Product FAQs" subtitle="Manage FAQs for this product"></app-page-header>
+
+<div class="flex justify-end my-4">
+    <button type="button" pButton icon="pi pi-pencil" label="Add FAQ" class="p-button p-button-primary" (click)="showDialog()"></button>
+</div>
+
+@if(loading()) {
+    <div class="flex items-center justify-center h-64">
+        <p-progress-spinner ariaLabel="loading" />
+    </div>
+} @else {
+   @for (faq of faqs(); track $index) {
+     <div class="p-4 border rounded mb-3 bg-white shadow-sm">
+        <div class="flex justify-between items-center mb-2">
+            <div class="w-[75%]">
+                <h3 class="text-xl font-semibold">{{ faq.question_en }}</h3>
+
+                <div class="prose prose-sm max-w-none" [innerHTML]="faq.answer_en"></div>
+            </div>
+
+            <div class="space-x-2 w-[25%] flex justify-center items-top">
+                <button type="button" pButton icon="pi pi-pencil" class="p-button-sm p-button-primary" (click)="editFAQ(faq)"></button>
+                <button type="button" pButton icon="pi pi-trash" class="p-button-sm p-button-danger" (click)="deleteFAQ(faq.id)"></button>
+            </div>
+        </div>
+
+        <p class="text-sm text-gray-700">{{ faq.answer }}</p>
+    </div>
+   }
+}
+
+<app-faq-form
+  [(visible)]="formVisible"
+  [mode]="formMode()"
+  [faqForm]="faqForm"
+  (save)="handleSave()"
+  [submitting]="submitting()"  
+></app-faq-form>
