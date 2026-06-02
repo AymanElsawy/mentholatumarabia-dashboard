@@ -232,12 +232,13 @@ export class SingleProductComponent {
                     } else {
                         try {
                             const parsed = JSON.parse(country.pivot.where_to_buy_link);
-                            if (Array.isArray(parsed) && parsed.length > 0) {
-                                links = parsed;
+                            if (Array.isArray(parsed)) {
+                                // If array is empty, use single empty string; otherwise use the parsed array
+                                links = parsed.length > 0 ? parsed : [''];
                             } else if (typeof parsed === 'string') {
                                 links = [parsed];
                             } else {
-                                links = [country.pivot.where_to_buy_link];
+                                links = [''];
                             }
                         } catch (e) {
                             links = [country.pivot.where_to_buy_link];
