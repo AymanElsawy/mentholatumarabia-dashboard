@@ -2,7 +2,7 @@ import { BlogsService } from '../../../../core/services/blogs.service';
 import { FieldsetModule } from 'primeng/fieldset';
 import { FileUploadComponent } from '../../../../core/components/file-upload/file-upload.component';
 import { MessageService } from 'primeng/api';
-import { ChangeDetectorRef, Component, inject, PLATFORM_ID, signal, computed, effect } from '@angular/core';
+import { Component, inject, signal, computed, effect } from '@angular/core';    
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -10,9 +10,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { FluidModule } from 'primeng/fluid';
 import { ToastModule } from 'primeng/toast';
-import { isPlatformBrowser } from '@angular/common';
 import { EditorModule } from 'primeng/editor';
-import Quill from 'quill';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { PageHeaderComponent } from '../../../../core/components/page-header/page-header.component';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
@@ -31,8 +29,6 @@ export class SingleBlogComponent {
     private messageService = inject(MessageService);
     private activatedRoute = inject(ActivatedRoute);
     private blogs = inject(BlogsService);
-    private cd = inject(ChangeDetectorRef);
-    private platformId = inject(PLATFORM_ID);
 
     id = toSignal(this.activatedRoute.paramMap.pipe(map(p => p.get('id'))));
 
@@ -64,20 +60,7 @@ export class SingleBlogComponent {
         });
     }
 
-    ngAfterViewInit() {
-        if (isPlatformBrowser(this.platformId)) {
-            new Quill('#editor', {
-                theme: 'snow',
-                modules: {
-                    toolbar: [
-                        ['bold', 'italic', 'underline'],
-                        [{ align: [] }],
-                        ['image']
-                    ]
-                }
-            });
-        }
-    }
+
 
     async submitForm() {
         if (this.blogForm.invalid) {
