@@ -2,7 +2,7 @@ import { BlogsService } from '../../../../core/services/blogs.service';
 import { FieldsetModule } from 'primeng/fieldset';
 import { FileUploadComponent } from '../../../../core/components/file-upload/file-upload.component';
 import { MessageService } from 'primeng/api';
-import { Component, inject, signal, computed, effect } from '@angular/core';    
+import { Component, inject, signal, computed, effect } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -30,7 +30,7 @@ export class SingleBlogComponent {
     private activatedRoute = inject(ActivatedRoute);
     private blogs = inject(BlogsService);
 
-    id = toSignal(this.activatedRoute.paramMap.pipe(map(p => p.get('id'))));
+    id = toSignal(this.activatedRoute.paramMap.pipe(map((p) => p.get('id'))));
 
     blogForm: FormGroup = this.fb.group(getBlogFormConfig());
 
@@ -53,14 +53,10 @@ export class SingleBlogComponent {
             const res = this.blogResource.value();
             if (res && res.blog) {
                 const blogData = { ...res.blog };
-                if (blogData.thumbnail) blogData.thumbnail = blogData.thumbnail.replace(/\/{2,}/g, '/');
-                if (blogData.image) blogData.image = blogData.image.replace(/\/{2,}/g, '/');
                 this.blogForm.patchValue(blogData);
             }
         });
     }
-
-
 
     async submitForm() {
         if (this.blogForm.invalid) {
@@ -114,8 +110,6 @@ export class SingleBlogComponent {
             }
         });
     }
-
-
 
     getFieldErrorMessage(fieldName: string): string {
         const field = this.blogForm.get(fieldName);
