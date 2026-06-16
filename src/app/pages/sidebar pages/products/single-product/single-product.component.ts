@@ -4,7 +4,7 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Reacti
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { ProductsService } from '../../../../core/services/products.service';
-import { TextareaModule } from 'primeng/textarea';
+import { EditorModule } from 'primeng/editor';
 import { FluidModule } from 'primeng/fluid';
 import { CountriesService } from '../../../../core/services/countries.service';
 import { SelectModule } from 'primeng/select';
@@ -27,7 +27,7 @@ interface UploadEvent {
 
 @Component({
     selector: 'app-single-product',
-    imports: [ FileUploadComponent, AccordionModule, CheckboxModule, FieldsetModule, ProgressSpinnerModule, SelectModule, FluidModule, TextareaModule, ReactiveFormsModule, ButtonModule, InputTextModule, PageHeaderComponent],
+    imports: [ FileUploadComponent, AccordionModule, CheckboxModule, FieldsetModule, ProgressSpinnerModule, SelectModule, FluidModule, ReactiveFormsModule, ButtonModule, InputTextModule, PageHeaderComponent,EditorModule ],
     templateUrl: './single-product.component.html',
     styleUrl: './single-product.component.scss'
 })

@@ -62,34 +62,62 @@
                         </div>
 
                         <!-- descriptions -->
-                        <div class="flex flex-wrap w-full">
-                            <label for="description_en" class="block mb-1 required">English Description</label>
-                            <textarea pTextarea id="description_en" formControlName="description_en" rows="4" [class.p-invalid]="isFieldInvalid('description_en')"></textarea>
+                        <div class="w-full">
+                            <label for="description_en" class="required">English Description</label>
+                            <div class="flex flex-col gap-1">
+                                <p-editor
+                                    id="description_en"
+                                    formControlName="description_en"
+                                    [class]="{ 'p-invalid': isFieldInvalid('description_en') }"
+                                    [style]="{ height: '320px' }"
+                                />
+                            </div>
                             @if (isFieldInvalid('description_en')) {
                                 <small class="text-red-500">{{ getFieldErrorMessage('description_en') }}</small>
                             }
                         </div>
 
-                        <div class="flex flex-wrap w-full">
-                            <label for="description_ar" class="block mb-1 required">Arabic Description</label>
-                            <textarea pTextarea id="description_ar" formControlName="description_ar" rows="4" [class.p-invalid]="isFieldInvalid('description_ar')"></textarea>
+                        <div class="w-full">
+                            <label for="description_ar" class="required">Arabic Description</label>
+                            <div class="flex flex-col gap-1">
+                                <p-editor
+                                    id="description_ar"
+                                    formControlName="description_ar"
+                                    [class]="{ 'p-invalid': isFieldInvalid('description_ar') }"
+                                    [style]="{ height: '320px' }"
+                                />
+                            </div>
                             @if (isFieldInvalid('description_ar')) {
                                 <small class="text-red-500">{{ getFieldErrorMessage('description_ar') }}</small>
                             }
                         </div>
 
                         <!-- details -->
-                        <div class="flex flex-wrap w-full">
-                            <label for="details_en" class="block mb-1 required">English Details</label>
-                            <textarea pTextarea id="details_en" formControlName="details_en" rows="4" [class.p-invalid]="isFieldInvalid('details_en')"></textarea>
+                        <div class="w-full">
+                            <label for="details_en" class="required">English Details</label>
+                            <div class="flex flex-col gap-1">
+                                <p-editor
+                                    id="details_en"
+                                    formControlName="details_en"
+                                    [class]="{ 'p-invalid': isFieldInvalid('details_en') }"
+                                    [style]="{ height: '320px' }"
+                                />
+                            </div>
                             @if (isFieldInvalid('details_en')) {
                                 <small class="text-red-500">{{ getFieldErrorMessage('details_en') }}</small>
                             }
                         </div>
 
-                        <div class="flex flex-wrap w-full">
-                            <label for="details_ar" class="block mb-1 required">Arabic Details</label>
-                            <textarea pTextarea id="details_ar" formControlName="details_ar" rows="4" [class.p-invalid]="isFieldInvalid('details_ar')"></textarea>
+                        <div class="w-full">
+                            <label for="details_ar" class="required">Arabic Details</label>
+                            <div class="flex flex-col gap-1">
+                                <p-editor
+                                    id="details_ar"
+                                    formControlName="details_ar"
+                                    [class]="{ 'p-invalid': isFieldInvalid('details_ar') }"
+                                    [style]="{ height: '320px' }"
+                                />
+                            </div>
                             @if (isFieldInvalid('details_ar')) {
                                 <small class="text-red-500">{{ getFieldErrorMessage('details_ar') }}</small>
                             }
