@@ -252,6 +252,88 @@
                         }
                     </div>
 
+                    <!-- Meta Title -->
+                    <div class="col-span-12 md:col-span-6">
+                        <label for="meta_title_en" class="block font-medium mb-2 required">
+                            Meta Title (English)
+                        </label>
+                        <input
+                            formControlName="meta_title_en"
+                            pInputText
+                            id="meta_title_en"
+                            type="text"
+                            [class]="getInputClasses('meta_title_en')"
+                            [ngClass]="{ 'p-invalid': isFieldInvalid('meta_title_en') }"
+                            placeholder="Enter meta title in English"
+                        />
+                        @if (isFieldInvalid('meta_title_en')) {
+                            <small class="text-red-500">
+                                {{ getFieldErrorMessage('meta_title_en') }}
+                            </small>
+                        }
+                    </div>
+
+                    <div class="col-span-12 md:col-span-6">
+                        <label for="meta_title_ar" class="block font-medium mb-2 required">
+                            Meta Title (Arabic)
+                        </label>
+                        <input
+                            formControlName="meta_title_ar"
+                            pInputText
+                            id="meta_title_ar"
+                            type="text"
+                            [class]="getInputClasses('meta_title_ar')"
+                            [ngClass]="{ 'p-invalid': isFieldInvalid('meta_title_ar') }"
+                            placeholder="Enter meta title in Arabic"
+                        />
+                        @if (isFieldInvalid('meta_title_ar')) {
+                            <small class="text-red-500">
+                                {{ getFieldErrorMessage('meta_title_ar') }}
+                            </small>
+                        }
+                    </div>
+
+                    <!-- Meta Description -->
+                    <div class="col-span-12 md:col-span-6">
+                        <label for="meta_desc_en" class="block font-medium mb-2 required">
+                            Meta Description (English)
+                        </label>
+                        <textarea
+                            formControlName="meta_desc_en"
+                            pTextarea
+                            id="meta_desc_en"
+                            [class]="getInputClasses('meta_desc_en')"
+                            [ngClass]="{ 'p-invalid': isFieldInvalid('meta_desc_en') }"
+                            placeholder="Enter meta description in English"
+                            rows="4"
+                        ></textarea>
+                        @if (isFieldInvalid('meta_desc_en')) {
+                            <small class="text-red-500">
+                                {{ getFieldErrorMessage('meta_desc_en') }}
+                            </small>
+                        }
+                    </div>
+
+                    <div class="col-span-12 md:col-span-6">
+                        <label for="meta_desc_ar" class="block font-medium mb-2 required">
+                            Meta Description (Arabic)
+                        </label>
+                        <textarea
+                            formControlName="meta_desc_ar"
+                            pTextarea
+                            id="meta_desc_ar"
+                            [class]="getInputClasses('meta_desc_ar')"
+                            [ngClass]="{ 'p-invalid': isFieldInvalid('meta_desc_ar') }"
+                            placeholder="Enter meta description in Arabic"
+                            rows="4"
+                        ></textarea>
+                        @if (isFieldInvalid('meta_desc_ar')) {
+                            <small class="text-red-500">
+                                {{ getFieldErrorMessage('meta_desc_ar') }}
+                            </small>
+                        }
+                    </div>
+
                     <!-- Image Upload -->
                     <div class="col-span-12">
                         <p-fieldset legend="Image">

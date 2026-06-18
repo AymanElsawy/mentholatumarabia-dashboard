@@ -12,7 +12,11 @@ export const BRAND_FORM_MESSAGES: { [key: string]: string } = {
     title_ar: 'Title (Arabic) is required',
     desc_en: 'Description (English) is required',
     desc_ar: 'Description (Arabic) is required',
-    image: 'Image is required'
+    image: 'Image is required',
+    meta_title_en: 'Meta title (English) is required',
+    meta_title_ar: 'Meta title (Arabic) is required',
+    meta_desc_en: 'Meta description (English) is required',
+    meta_desc_ar: 'Meta description (Arabic) is required'
 };
 
 export const getBrandFormConfig = () => ({
@@ -27,5 +31,9 @@ export const getBrandFormConfig = () => ({
     title_ar: ['', [Validators.required, Validators.minLength(3)]],
     desc_en: ['', [Validators.required, Validators.minLength(10)]],
     desc_ar: ['', [Validators.required, Validators.minLength(10)]],
-    image: ['', Validators.required]
+    image: ['', Validators.required],
+    meta_title_en: ['', [Validators.required, Validators.minLength(3)]],
+    meta_title_ar: ['', [Validators.required, Validators.minLength(3)]],
+    meta_desc_en: ['', [Validators.required, Validators.minLength(10)]],
+    meta_desc_ar: ['', [Validators.required, Validators.minLength(10)]]
 });
