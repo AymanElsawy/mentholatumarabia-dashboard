@@ -1,0 +1,60 @@
+<h2>Reviews</h2>
+<div class="card">
+    <app-table-data
+        [data]="reviewsList()"
+        [loading]="loading()"
+        [columns]="tableColumns"
+        [globalFilterFields]="globalFilterFields"
+        [customActions]="customActions"
+        (toggleChange)="onStatusToggle($event)">
+    </app-table-data>
+</div>
+
+<p-dialog header="Review Details" [(visible)]="displayDetails" [modal]="true" [style]="{ width: '45rem' }">
+    @if (selectedReview(); as review) {
+        <div class="flex flex-col gap-3">
+            <div class="grid grid-cols-2 gap-3">
+                <div><strong>ID:</strong> {{ review.id }}</div>
+                <div><strong>Type:</strong> {{ review.type | titlecase }}</div>
+                <div><strong>Product ID:</strong> {{ review.product_id }}</div>
+                <div><strong>Rating:</strong> {{ review.rating }}</div>
+                <div><strong>User Name:</strong> {{ review.user_name }}</div>
+                <div><strong>User Email:</strong> {{ review.user_email }}</div>
+                <div><strong>Job Title:</strong> {{ review.user_job_title }}</div>
+                <div>
+                    <strong>Status:</strong>
+                    <p-tag [severity]="review.status ? 'success' : 'danger'" [value]="review.status ? 'Active' : 'Inactive'"></p-tag>
+                </div>
+                <div><strong>Created At:</strong> {{ review.created_at | date: 'medium' }}</div>
+                <div><strong>Updated At:</strong> {{ review.updated_at | date: 'medium' }}</div>
+            </div>
+
+            <div>
+                <strong>Comment:</strong>
+                <p>{{ review.comment }}</p>
+            </div>
+
+            @if (review.image.length > 0) {
+                <div>
+                    <strong>Images:</strong>
+                    <div class="flex flex-wrap gap-2 mt-2">
+                        @for (img of review.image; track img) {
+                            <img [src]="img" alt="review image" class="w-20 h-20 object-cover rounded-md border border-gray-300 shadow-sm" />
+                        }
+                    </div>
+                </div>
+            }
+
+            @if (review.video.length > 0) {
+                <div>
+                    <strong>Videos:</strong>
+                    <div class="flex flex-wrap gap-2 mt-2">
+                        @for (vid of review.video; track vid) {
+                            <video [src]="vid" controls class="w-40 h-24 rounded-md border border-gray-300 shadow-sm"></video>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</p-dialog>

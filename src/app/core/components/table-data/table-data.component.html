@@ -66,6 +66,9 @@
                             @case ('date') {
                                 {{ resolveField(item, col.field) | date: 'MMM d, y' }}
                             }
+                            @case ('toggle') {
+                                <p-toggleswitch [ngModel]="resolveField(item, col.field)" (ngModelChange)="onToggle(item, col.field, $event)"></p-toggleswitch>
+                            }
                             @default {
                                 {{ col.isTitleCase ? (resolveField(item, col.field) | titlecase) : resolveField(item, col.field) }}
                             }

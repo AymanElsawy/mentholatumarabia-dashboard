@@ -2,6 +2,8 @@ import { SingleBlogComponent } from './sidebar pages/blogs/single-blog/single-bl
 import { SingleCountryComponent } from './sidebar pages/countries/single-country/single-country.component';
 import { Routes } from '@angular/router';
 import { BrandsComponent } from './sidebar pages/brands/brands-table/brands.component';
+import { CategoriesComponent } from './sidebar pages/categories/categories-table/categories.component';
+import { SingleCategoryComponent } from './sidebar pages/categories/single-category/single-category.component';
 import { CountriesComponent } from './sidebar pages/countries/countries-table/countries.component';
 import { ProductsComponent } from './sidebar pages/products/products-table/products.component';
 import { BlogsComponent } from './sidebar pages/blogs/blogs-table/blogs.component';
@@ -12,11 +14,14 @@ import { FaqComponent } from './sidebar pages/faq/faq-table/faq.component';
 import { SingleProductFAQComponent } from './sidebar pages/faq/single-product-faq/single-product-faq.component';
 import { UsersComponent } from './sidebar pages/users/users-table/users.component';
 import { SingleUserComponent } from './sidebar pages/users/single-user/single-user.component';
+import { ReviewsComponent } from './sidebar pages/reviews/reviews-table/reviews.component';
 
 export default [
     { path: '', redirectTo: 'brands', pathMatch: 'full' },
     { path: 'brands', component: BrandsComponent, title: 'Brands | Mentholatum' },
     { path: 'brands/:id', component: SingleBrandComponent, title: 'Brand | Mentholatum' },
+    { path: 'categories', component: CategoriesComponent, title: 'Categories | Mentholatum' },
+    { path: 'categories/:id', component: SingleCategoryComponent, title: 'Category | Mentholatum' },
     { path: 'countries', component: CountriesComponent, title: 'Countries | Mentholatum' },
     { path: 'countries/:id', component: SingleCountryComponent, title: 'Country | Mentholatum' },
 
@@ -31,6 +36,7 @@ export default [
     { path: 'admins/:id', component: SingleUserComponent, title: 'Admin | Mentholatum' },
 
     { path: 'contact', component: ContactComponent, title: 'Contact | Mentholatum' },
+    { path: 'reviews', component: ReviewsComponent, title: 'Reviews | Mentholatum' },
 
     { path: '**', redirectTo: '/notfound' }
 ] as Routes;

@@ -45,20 +45,43 @@
                             </div>
                         </div>
 
-                        <!-- brand -->
-                        <div class="flex flex-col gap-2 w-full">
-                            <label for="brand" class="required">Brand</label>
-                            <select formControlName="brand_id" class="border rounded-md px-4 py-2 w-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" [class]="{ 'border-red-500': isFieldInvalid('brand_id') }">
-                                <option value="" disabled selected>Select a Brand</option>
-                                @for (brand of brands; track brand.id) {
-                                    <option [value]="brand.id">
-                                        {{ brand.name_en }}
-                                    </option>
+                        <!-- brand and category -->
+                        <div class="flex flex-col md:flex-row gap-6">
+                            <div class="flex flex-col gap-2 w-full">
+                                <label for="brand" class="required">Brand</label>
+                                <select formControlName="brand_id" class="border rounded-md px-4 py-2 w-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" [class]="{ 'border-red-500': isFieldInvalid('brand_id') }">
+                                    <option value="" disabled selected>Select a Brand</option>
+                                    @for (brand of brands; track brand.id) {
+                                        <option [value]="brand.id">
+                                            {{ brand.name_en }}
+                                        </option>
+                                    }
+                                </select>
+                                @if (isFieldInvalid('brand_id')) {
+                                    <small class="text-red-500">{{ getFieldErrorMessage('brand_id') }}</small>
                                 }
-                            </select>
-                            @if (isFieldInvalid('brand_id')) {
-                                <small class="text-red-500">{{ getFieldErrorMessage('brand_id') }}</small>
-                            }
+                            </div>
+
+                            <div class="flex flex-col gap-2 w-full">
+                                <label for="category" class="required">Category</label>
+                                @if (categoriesResource.isLoading()) {
+                                    <div class="flex items-center gap-2">
+                                        <p-progress-spinner class="w-6! h-6!" strokeWidth="6" ariaLabel="loading" />
+                                    </div>
+                                } @else {
+                                    <select formControlName="category_id" class="border rounded-md px-4 py-2 w-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" [class]="{ 'border-red-500': isFieldInvalid('category_id') }">
+                                        <option value="" disabled selected>Select a Category</option>
+                                        @for (category of categoriesList(); track category.id) {
+                                            <option [value]="category.id">
+                                                {{ category.name_en }}
+                                            </option>
+                                        }
+                                    </select>
+                                }
+                                @if (isFieldInvalid('category_id')) {
+                                    <small class="text-red-500">{{ getFieldErrorMessage('category_id') }}</small>
+                                }
+                            </div>
                         </div>
 
                         <!-- descriptions -->
@@ -123,6 +146,21 @@
                             }
                         </div>
 
+                        <!-- returns and exchanges -->
+                        <div class="w-full">
+                            <label for="returns_and_exchanges_en">English Returns &amp; Exchanges</label>
+                            <div class="flex flex-col gap-1">
+                                <p-editor id="returns_and_exchanges_en" formControlName="returns_and_exchanges_en" [style]="{ height: '220px' }" />
+                            </div>
+                        </div>
+
+                        <div class="w-full">
+                            <label for="returns_and_exchanges_ar">Arabic Returns &amp; Exchanges</label>
+                            <div class="flex flex-col gap-1">
+                                <p-editor id="returns_and_exchanges_ar" formControlName="returns_and_exchanges_ar" [style]="{ height: '220px' }" />
+                            </div>
+                        </div>
+
                         <!-- countries and where to buy -->
                         <p-fieldset legend="Where to Buy">
                             <p>URL must be valid (start with http or https)</p>
@@ -168,6 +206,273 @@
                             @if (isFieldInvalid('countries')) {
                                 <small class="text-red-500">{{ getFieldErrorMessage('countries') }}</small>
                             }
+                        </p-fieldset>
+
+                        <!-- Features -->
+                        <p-fieldset legend="Features">
+                            <div class="flex flex-col gap-4" formArrayName="features">
+                                @for (featureControl of featuresControls; track i; let i = $index) {
+                                    <div [formGroupName]="i" class="border rounded-md p-4 flex flex-col gap-4">
+                                        <div class="flex justify-between items-center">
+                                            <span class="font-semibold">Feature {{ i + 1 }}</span>
+                                            <p-button icon="pi pi-trash" (onClick)="removeFeature(i)" [rounded]="true" severity="danger"></p-button>
+                                        </div>
+                                        <div class="flex flex-wrap gap-2 w-full">
+                                            <label class="required">Icon</label>
+                                            <p-select formControlName="icon" [options]="featureIconOptions" optionLabel="label" optionValue="value" placeholder="Select an icon" [class.p-invalid]="isControlInvalid(featureControl.get('icon'))">
+                                                <ng-template #selectedItem let-selectedOption>
+                                                    @if (selectedOption) {
+                                                        <div class="flex items-center gap-2">
+                                                            <i [class]="selectedOption.value"></i>
+                                                            <span>{{ selectedOption.label }}</span>
+                                                        </div>
+                                                    }
+                                                </ng-template>
+                                                <ng-template let-icon #item>
+                                                    <div class="flex items-center gap-2">
+                                                        <i [class]="icon.value"></i>
+                                                        <span>{{ icon.label }}</span>
+                                                    </div>
+                                                </ng-template>
+                                            </p-select>
+                                            @if (isControlInvalid(featureControl.get('icon'))) {
+                                                <small class="text-red-500">{{ getControlErrorMessage(featureControl.get('icon'), 'Icon') }}</small>
+                                            }
+                                        </div>
+                                        <div class="flex flex-col md:flex-row gap-6">
+                                            <div class="flex flex-wrap gap-2 w-full">
+                                                <label class="required">English Title</label>
+                                                <input pInputText formControlName="title_en" type="text" [class.p-invalid]="isControlInvalid(featureControl.get('title_en'))" />
+                                                @if (isControlInvalid(featureControl.get('title_en'))) {
+                                                    <small class="text-red-500">{{ getControlErrorMessage(featureControl.get('title_en'), 'English title') }}</small>
+                                                }
+                                            </div>
+                                            <div class="flex flex-wrap gap-2 w-full">
+                                                <label class="required">Arabic Title</label>
+                                                <input pInputText formControlName="title_ar" type="text" [class.p-invalid]="isControlInvalid(featureControl.get('title_ar'))" />
+                                                @if (isControlInvalid(featureControl.get('title_ar'))) {
+                                                    <small class="text-red-500">{{ getControlErrorMessage(featureControl.get('title_ar'), 'Arabic title') }}</small>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <div class="flex justify-end mt-4">
+                                <p-button icon="pi pi-plus" label="Add Feature" (onClick)="addFeature()" severity="success" [fluid]="false"></p-button>
+                            </div>
+                        </p-fieldset>
+
+                        <!-- Videos -->
+                        <p-fieldset legend="Videos">
+                            <div class="flex flex-col gap-4" formArrayName="videos">
+                                @for (videoControl of videosControls; track i; let i = $index) {
+                                    <div [formGroupName]="i" class="border rounded-md p-4 flex flex-col gap-4">
+                                        <div class="flex justify-between items-center">
+                                            <span class="font-semibold">Video {{ i + 1 }}</span>
+                                            <p-button icon="pi pi-trash" (onClick)="removeVideo(i)" [rounded]="true" severity="danger"></p-button>
+                                        </div>
+                                        <div class="flex flex-col gap-2 w-full">
+                                            <label class="required">Thumbnail</label>
+                                            <app-file-upload formControlName="thumbnail" accept="image/*" [maxFileSizeMB]="10" label=""></app-file-upload>
+                                            @if (isControlInvalid(videoControl.get('thumbnail'))) {
+                                                <small class="text-red-500">{{ getControlErrorMessage(videoControl.get('thumbnail'), 'Thumbnail') }}</small>
+                                            }
+                                        </div>
+                                        <div class="flex flex-wrap gap-2 w-full">
+                                            <label class="required">Video URL</label>
+                                            <input pInputText formControlName="video_url" type="text" placeholder="https://..." [class.p-invalid]="isControlInvalid(videoControl.get('video_url'))" />
+                                            @if (isControlInvalid(videoControl.get('video_url'))) {
+                                                <small class="text-red-500">{{ getControlErrorMessage(videoControl.get('video_url'), 'Video URL') }}</small>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <div class="flex justify-end mt-4">
+                                <p-button icon="pi pi-plus" label="Add Video" (onClick)="addVideo()" severity="success" [fluid]="false"></p-button>
+                            </div>
+                        </p-fieldset>
+
+                        <!-- Benefits -->
+                        <p-fieldset legend="Benefits">
+                            <div formGroupName="benefits" class="flex flex-col gap-4">
+                                <div class="flex flex-col gap-2 w-full">
+                                    <label>Background Image</label>
+                                    <app-file-upload formControlName="background_image" accept="image/*" [maxFileSizeMB]="10" label=""></app-file-upload>
+                                </div>
+
+                                <div class="flex flex-col gap-4" formArrayName="items">
+                                    @for (benefitControl of benefitsItemsControls; track i; let i = $index) {
+                                        <div [formGroupName]="i" class="border rounded-md p-4 flex flex-col gap-4">
+                                            <div class="flex justify-between items-center">
+                                                <span class="font-semibold">Benefit {{ i + 1 }}</span>
+                                                <p-button icon="pi pi-trash" (onClick)="removeBenefitItem(i)" [rounded]="true" severity="danger"></p-button>
+                                            </div>
+                                            <div class="flex flex-wrap gap-2 w-full">
+                                                <label class="required">Icon</label>
+                                                <p-select formControlName="icon" [options]="benefitIconOptions" optionLabel="label" optionValue="value" placeholder="Select an icon" [class.p-invalid]="isControlInvalid(benefitControl.get('icon'))">
+                                                    <ng-template #selectedItem let-selectedOption>
+                                                        @if (selectedOption) {
+                                                            <div class="flex items-center gap-2">
+                                                                <i [class]="selectedOption.value"></i>
+                                                                <span>{{ selectedOption.label }}</span>
+                                                            </div>
+                                                        }
+                                                    </ng-template>
+                                                    <ng-template let-icon #item>
+                                                        <div class="flex items-center gap-2">
+                                                            <i [class]="icon.value"></i>
+                                                            <span>{{ icon.label }}</span>
+                                                        </div>
+                                                    </ng-template>
+                                                </p-select>
+                                                @if (isControlInvalid(benefitControl.get('icon'))) {
+                                                    <small class="text-red-500">{{ getControlErrorMessage(benefitControl.get('icon'), 'Icon') }}</small>
+                                                }
+                                            </div>
+                                            <div class="flex flex-col md:flex-row gap-6">
+                                                <div class="flex flex-wrap gap-2 w-full">
+                                                    <label class="required">English Title</label>
+                                                    <input pInputText formControlName="title_en" type="text" [class.p-invalid]="isControlInvalid(benefitControl.get('title_en'))" />
+                                                    @if (isControlInvalid(benefitControl.get('title_en'))) {
+                                                        <small class="text-red-500">{{ getControlErrorMessage(benefitControl.get('title_en'), 'English title') }}</small>
+                                                    }
+                                                </div>
+                                                <div class="flex flex-wrap gap-2 w-full">
+                                                    <label class="required">Arabic Title</label>
+                                                    <input pInputText formControlName="title_ar" type="text" [class.p-invalid]="isControlInvalid(benefitControl.get('title_ar'))" />
+                                                    @if (isControlInvalid(benefitControl.get('title_ar'))) {
+                                                        <small class="text-red-500">{{ getControlErrorMessage(benefitControl.get('title_ar'), 'Arabic title') }}</small>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div class="flex flex-col md:flex-row gap-6">
+                                                <div class="flex flex-wrap gap-2 w-full">
+                                                    <label class="required">English Description</label>
+                                                    <input pInputText formControlName="description_en" type="text" [class.p-invalid]="isControlInvalid(benefitControl.get('description_en'))" />
+                                                    @if (isControlInvalid(benefitControl.get('description_en'))) {
+                                                        <small class="text-red-500">{{ getControlErrorMessage(benefitControl.get('description_en'), 'English description') }}</small>
+                                                    }
+                                                </div>
+                                                <div class="flex flex-wrap gap-2 w-full">
+                                                    <label class="required">Arabic Description</label>
+                                                    <input pInputText formControlName="description_ar" type="text" [class.p-invalid]="isControlInvalid(benefitControl.get('description_ar'))" />
+                                                    @if (isControlInvalid(benefitControl.get('description_ar'))) {
+                                                        <small class="text-red-500">{{ getControlErrorMessage(benefitControl.get('description_ar'), 'Arabic description') }}</small>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="flex justify-end">
+                                    <p-button icon="pi pi-plus" label="Add Benefit" (onClick)="addBenefitItem()" severity="success" [fluid]="false"></p-button>
+                                </div>
+                            </div>
+                        </p-fieldset>
+
+                        <!-- Suitable Areas -->
+                        <p-fieldset legend="Suitable Areas">
+                            <div class="flex flex-col gap-4" formArrayName="suitable_areas">
+                                @for (areaControl of suitableAreasControls; track i; let i = $index) {
+                                    <div [formGroupName]="i" class="border rounded-md p-4 flex flex-col gap-4">
+                                        <div class="flex justify-between items-center">
+                                            <span class="font-semibold">Suitable Area {{ i + 1 }}</span>
+                                            <p-button icon="pi pi-trash" (onClick)="removeSuitableArea(i)" [rounded]="true" severity="danger"></p-button>
+                                        </div>
+                                        <div class="flex flex-col md:flex-row gap-6">
+                                            <div class="flex flex-wrap gap-2 w-full">
+                                                <label class="required">English Title</label>
+                                                <input pInputText formControlName="title_en" type="text" [class.p-invalid]="isControlInvalid(areaControl.get('title_en'))" />
+                                                @if (isControlInvalid(areaControl.get('title_en'))) {
+                                                    <small class="text-red-500">{{ getControlErrorMessage(areaControl.get('title_en'), 'English title') }}</small>
+                                                }
+                                            </div>
+                                            <div class="flex flex-wrap gap-2 w-full">
+                                                <label class="required">Arabic Title</label>
+                                                <input pInputText formControlName="title_ar" type="text" [class.p-invalid]="isControlInvalid(areaControl.get('title_ar'))" />
+                                                @if (isControlInvalid(areaControl.get('title_ar'))) {
+                                                    <small class="text-red-500">{{ getControlErrorMessage(areaControl.get('title_ar'), 'Arabic title') }}</small>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="flex flex-col gap-2 w-full">
+                                            <label class="required">Image</label>
+                                            <app-file-upload formControlName="image" accept="image/*" [maxFileSizeMB]="10" label=""></app-file-upload>
+                                            @if (isControlInvalid(areaControl.get('image'))) {
+                                                <small class="text-red-500">{{ getControlErrorMessage(areaControl.get('image'), 'Image') }}</small>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <div class="flex justify-end mt-4">
+                                <p-button icon="pi pi-plus" label="Add Suitable Area" (onClick)="addSuitableArea()" severity="success" [fluid]="false"></p-button>
+                            </div>
+                        </p-fieldset>
+
+                        <!-- How It Works -->
+                        <p-fieldset legend="How It Works">
+                            <div class="flex flex-col gap-4" formArrayName="how_it_works">
+                                @for (stepControl of howItWorksControls; track i; let i = $index) {
+                                    <div [formGroupName]="i" class="border rounded-md p-4 flex flex-col gap-4">
+                                        <div class="flex justify-between items-center">
+                                            <span class="font-semibold">Step {{ i + 1 }}</span>
+                                            <p-button icon="pi pi-trash" (onClick)="removeHowItWorksStep(i)" [rounded]="true" severity="danger"></p-button>
+                                        </div>
+                                        <div class="flex flex-wrap gap-2 w-full">
+                                            <label class="required">Step Number</label>
+                                            <input pInputText formControlName="step" type="number" [class.p-invalid]="isControlInvalid(stepControl.get('step'))" />
+                                            @if (isControlInvalid(stepControl.get('step'))) {
+                                                <small class="text-red-500">{{ getControlErrorMessage(stepControl.get('step'), 'Step number') }}</small>
+                                            }
+                                        </div>
+                                        <div class="flex flex-col md:flex-row gap-6">
+                                            <div class="flex flex-wrap gap-2 w-full">
+                                                <label class="required">English Title</label>
+                                                <input pInputText formControlName="title_en" type="text" [class.p-invalid]="isControlInvalid(stepControl.get('title_en'))" />
+                                                @if (isControlInvalid(stepControl.get('title_en'))) {
+                                                    <small class="text-red-500">{{ getControlErrorMessage(stepControl.get('title_en'), 'English title') }}</small>
+                                                }
+                                            </div>
+                                            <div class="flex flex-wrap gap-2 w-full">
+                                                <label class="required">Arabic Title</label>
+                                                <input pInputText formControlName="title_ar" type="text" [class.p-invalid]="isControlInvalid(stepControl.get('title_ar'))" />
+                                                @if (isControlInvalid(stepControl.get('title_ar'))) {
+                                                    <small class="text-red-500">{{ getControlErrorMessage(stepControl.get('title_ar'), 'Arabic title') }}</small>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="flex flex-col md:flex-row gap-6">
+                                            <div class="flex flex-wrap gap-2 w-full">
+                                                <label class="required">English Description</label>
+                                                <input pInputText formControlName="description_en" type="text" [class.p-invalid]="isControlInvalid(stepControl.get('description_en'))" />
+                                                @if (isControlInvalid(stepControl.get('description_en'))) {
+                                                    <small class="text-red-500">{{ getControlErrorMessage(stepControl.get('description_en'), 'English description') }}</small>
+                                                }
+                                            </div>
+                                            <div class="flex flex-wrap gap-2 w-full">
+                                                <label class="required">Arabic Description</label>
+                                                <input pInputText formControlName="description_ar" type="text" [class.p-invalid]="isControlInvalid(stepControl.get('description_ar'))" />
+                                                @if (isControlInvalid(stepControl.get('description_ar'))) {
+                                                    <small class="text-red-500">{{ getControlErrorMessage(stepControl.get('description_ar'), 'Arabic description') }}</small>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="flex flex-col gap-2 w-full">
+                                            <label class="required">Image</label>
+                                            <app-file-upload formControlName="image" accept="image/*" [maxFileSizeMB]="10" label=""></app-file-upload>
+                                            @if (isControlInvalid(stepControl.get('image'))) {
+                                                <small class="text-red-500">{{ getControlErrorMessage(stepControl.get('image'), 'Image') }}</small>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <div class="flex justify-end mt-4">
+                                <p-button icon="pi pi-plus" label="Add Step" (onClick)="addHowItWorksStep()" severity="success" [fluid]="false"></p-button>
+                            </div>
                         </p-fieldset>
 
                         <!-- meta -->
@@ -238,6 +543,11 @@
                             @if (isFieldInvalid('thumbnail')) {
                                 <small class="text-red-500">{{ getFieldErrorMessage('thumbnail') }}</small>
                             }
+                        </p-fieldset>
+
+                        <!-- Main Image -->
+                        <p-fieldset legend="Main Image">
+                            <app-file-upload formControlName="main_image" accept="image/*" [maxFileSizeMB]="10" label=""></app-file-upload>
                         </p-fieldset>
 
                         <!-- Submit -->

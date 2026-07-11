@@ -8,11 +8,13 @@ import { InputIconModule } from 'primeng/inputicon';
 import { IconFieldModule } from 'primeng/iconfield';
 import { SkeletonModule } from 'primeng/skeleton';
 import { DialogModule } from 'primeng/dialog';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { FormsModule } from '@angular/forms';
 
 export interface TableColumn {
   field: string;
   header: string;
-  type: 'text' | 'link' | 'image' | 'date' | 'mailto';
+  type: 'text' | 'link' | 'image' | 'date' | 'mailto' | 'toggle';
   linkPrefix?: string; // used if type is 'link'
   isTitleCase?: boolean; // For formatting
 }
@@ -38,7 +40,9 @@ export interface TableAction {
     InputIconModule,
     IconFieldModule,
     SkeletonModule,
-    DialogModule
+    DialogModule,
+    ToggleSwitchModule,
+    FormsModule
   ],
   templateUrl: './table-data.component.html',
   styleUrl: './table-data.component.scss'
@@ -54,6 +58,7 @@ export class TableDataComponent {
   @Input() customActions: TableAction[] = [];
   
   @Output() delete = new EventEmitter<any>();
+  @Output() toggleChange = new EventEmitter<{ item: any; field: string; value: boolean }>();
 
   @ViewChild('filter') filter!: ElementRef;
   
@@ -86,5 +91,9 @@ export class TableDataComponent {
   resolveField(obj: any, path: string) {
     if (!path || !obj) return '';
     return path.split('.').reduce((acc, part) => acc && acc[part], obj);
+  }
+
+  onToggle(item: any, field: string, value: boolean) {
+    this.toggleChange.emit({ item, field, value });
   }
 }

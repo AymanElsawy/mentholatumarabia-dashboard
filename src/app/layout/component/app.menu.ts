@@ -24,6 +24,9 @@ export class AppMenu {
                 items: [{ label: 'Brands', icon: 'pi pi-fw pi-star', routerLink: ['/pages/brands'] }]
             },
             {
+                items: [{ label: 'Categories', icon: 'pi pi-fw pi-tags', routerLink: ['/pages/categories'] }]
+            },
+            {
                 items: [{ label: 'Products', icon: 'pi pi-fw pi-list', routerLink: ['/pages/products'] }]
             },
             {
@@ -41,6 +44,9 @@ export class AppMenu {
             },
             {
                 items: [{ label: 'Admins', icon: 'pi pi-users', routerLink: ['/pages/admins'] }]
+            },
+            {
+                items: [{ label: 'Reviews', icon: 'pi pi-fw pi-star-fill', routerLink: ['/pages/reviews'] }]
             }
         ];
     }
