@@ -49,9 +49,10 @@ export class BlogsComponent {
   tableColumns: TableColumn[] = [
     { field: 'id', header: 'ID', type: 'text' },
     { field: 'title_en', header: 'English Name', type: 'link', linkPrefix: '/pages/blogs' },
-    { field: 'title_ar', header: 'Arabic Name', type: 'link', linkPrefix: '/pages/blogs' }
+    { field: 'title_ar', header: 'Arabic Name', type: 'link', linkPrefix: '/pages/blogs' },
+    { field: 'created_at', header: 'Created At', type: 'date' }
   ];
-  globalFilterFields: string[] = ['id', 'title_en', 'title_ar'];
+  globalFilterFields: string[] = ['id', 'created_at', 'title_en', 'title_ar'];
 
   deleteBlog(brandId: any) {
     this.blogs.deleteBlog(brandId).subscribe(() => {
